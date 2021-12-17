@@ -1,0 +1,113 @@
+:root {
+    --avo-light: #AEBD4C;
+    --avo-dark: #4B7F08;
+    --avo-pit: #904F38;
+    --avo-skin: #325305;
+}
+
+*, *::after, *::before
+ {
+  margin: 0 0;
+  padding: 0 0;
+}
+
+html {
+    font-size: 16px;
+    min-height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+#avoyy-logo {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    width: 20vw;
+    min-width: 100px;
+    max-width: 200px;
+    height: auto;
+}
+.logo-left {
+    animation: slide-logo-left 1s;
+}
+.logo-right {
+    animation: slide-logo-right 1s;
+}
+
+#content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+#looking, 
+#giving {
+    height: 100vh;
+    text-align: center;
+    align-items: center;
+    display: grid;
+    overflow: hidden;
+}
+
+#looking {
+    background-color: var(--avo-light);
+}
+
+#giving {
+    background-color: var(--avo-dark);
+}
+
+p {
+  align-self: center;
+  justify-self: center;
+  font-size: 150%;
+  /* background-color: var(--avo-pit); */
+  border-radius: 10px;
+  padding: 10px;
+  /* prevents the text from spaning over multiple lines */
+  white-space: nowrap;
+}
+
+
+
+/* Animations for giving and looking divs to fill screen. */
+.div-fill {
+    animation: fill-screen 1s;
+}
+
+.fullscreen {
+    width: 100vw;
+}
+
+@keyframes fill-screen {
+    0% {
+        width: 50vw;
+    }
+    100% {
+        width: 100vw;   
+    }
+}
+
+@keyframes slide-logo-left {
+    0% {
+        transform: translate(-50%, -25%);
+    }
+    100% {
+        transform: translate(-100vw, -25%);
+    }
+}
+@keyframes slide-logo-right {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100vw);
+    }
+}
+/*-- End of animations for giving and looking divs. --*/
+
+button {
+  padding: 10px;
+  background-color: var(--avo-pit);
+  display: inline-block;
+}

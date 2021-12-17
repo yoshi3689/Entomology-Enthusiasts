@@ -1,0 +1,9 @@
+<!-- SVG for avocado-coloured yin-yang -->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewbox="-40 -40 80 80">
+    <circle r="39" fill="#4B7F08"/>
+    <path fill="#AEBD4C" d="M0,38a38,38 0 0 1 0,-76a19,19 0 0 1 0,38a19,19 0 0 0 0,38"/>
+    <circle r="5" cy="19" fill="#904F38"/>
+    <circle r="5" cy="-19"  fill="#904F38"/>
+    <circle r="38.5" stroke="#325305" stroke-width="1" fill="none" />
+</svg>
