@@ -4,8 +4,8 @@ const givingDiv = document.getElementById("giving");
 let lookingClicked = false;
 let givingClicked = false;
 let clicked = false;
+
 let receiveClicked = false;
-let exchangeClicked = false;
 let giveClicked = false;
 
 // expand the div element cliecked across the page
@@ -59,8 +59,8 @@ function insertButtons() {
 
   if (lookingClicked) {
     btnDiv.innerHTML = `
-      <button class="receive" onclick="manyRipe()">To Receive</button>
-      <button class="exchange" onclick="manyRipe()">To Exchange</button>`;
+      <button id="receive" onclick="manyRipeReceive()">To Receive</button>
+      <button id="exchange" onclick="manyRipeLookingExchange()">To Exchange</button>`;
 
     lookingDiv.appendChild(btnDiv);
     btnDiv.classList.add("fade-in");
@@ -68,8 +68,8 @@ function insertButtons() {
 
   } else if (givingClicked) {
     btnDiv.innerHTML = `
-      <button class="give" onclick="manyRipe()">To Give</button>
-      <button class="exchange" onclick="manyRipe()">To Exchange</button>`;
+      <button id="give" onclick="manyRipeGive()">To Give</button>
+      <button id="exchange" onclick="manyRipeGivingExchange()">To Exchange</button>`;
       
     givingDiv.appendChild(btnDiv);
     btnDiv.classList.add("fade-in");
@@ -78,62 +78,161 @@ function insertButtons() {
 
 }
 
-function manyRipe() {
+
+function manyRipeReceive() {
+  document.getElementById("exchange").style.display = "none";
+
+  receiveHowMany();
+  receiveRipe();
+}
+
+function manyRipeLookingExchange() {
+  document.getElementById("receive").style.display = "none";
+
+  receiveHowMany();
+  receiveRipe();
+}
+
+function manyRipeGive() {
+  document.getElementById("exchange").style.display = "none";
+
+  giveHowMany();
+  giveRipe();
+}
+
+function manyRipeGivingExchange() {
+  document.getElementById("give").style.display = "none";
+
+  giveHowMany();
+  giveRipe();
+}
+
+
+function receiveHowMany() {
 
   if (!receiveClicked) {
-    receiveClicked = true;
-        
 
-  }
-
-  document.getElementsByClassName();
-
-  howMany();
-  ripe();
-}
-
-function increment() {
-  
-}
-
-function decrement() {
-
-}
-
-
-function howMany() {
+    const topButton = document.getElementById("looking");
 
     //label for How Many
-    const label1 = document.createElement("label");
-    label1.setAttribute("for", "name");
-    label1.setAttribute("value", "How Many?");
-
-  
-    // Increment Button
-    const increment = document.createElement("input");
-    increment.setAttribute("type", "button");
-    increment.setAttribute("value", "+");
-    increment.setAttribute("onclick", "increment()");
-
+    const label1 = document.createElement("p");
+    label1.setAttribute("id", "receiveHowMany");
+    label1.innerText = "How Many?";
+    topButton.appendChild(label1);
     
     // Decrement Button
-    const decrement = document.createElement("input")
+    const decrement = document.createElement("input");
+    decrement.setAttribute("id", "decrement");
     decrement.setAttribute("type", "button");
     decrement.setAttribute("value", "-");
     decrement.setAttribute("onclick", "decrement()");
+    topButton.appendChild(decrement);
+
+    const number = document.createElement("input");
+    number.setAttribute("id", "number");
+    number.setAttribute("value", 0);
+    topButton.appendChild(number);
+
+    // Increment Button
+    const increment = document.createElement("input");
+    decrement.setAttribute("id", "increment");
+    increment.setAttribute("type", "button");
+    increment.setAttribute("value", "+");
+    increment.setAttribute("onclick", "increment()");
+    topButton.appendChild(increment);
+
+    receiveClicked = true;
+  }
 
 }
 
-function ripe() {
+
+function giveHowMany() {
+
+  if (!giveClicked) {
+
+    const topButton = document.getElementById("giving");
+
+      //label for How Many
+    const label1 = document.createElement("p");
+    label1.setAttribute("id", "giveHowMany");
+    label1.innerText = "How Many?";
+    topButton.appendChild(label1);
+    
+    // Decrement Button
+    const decrement = document.createElement("input");
+    decrement.setAttribute("id", "decrement");
+    decrement.setAttribute("type", "button");
+    decrement.setAttribute("value", "-");
+    decrement.setAttribute("onclick", "decrement()");
+    topButton.appendChild(decrement);
+
+    const number = document.createElement("input");
+    number.setAttribute("id", "number");
+    number.setAttribute("value", 0);
+    topButton.appendChild(number);
+
+    // Increment Button
+    const increment = document.createElement("input");
+    decrement.setAttribute("id", "increment");
+    increment.setAttribute("type", "button");
+    increment.setAttribute("value", "+");
+    increment.setAttribute("onclick", "increment()");
+    topButton.appendChild(increment);
+
+    giveClicked = true;
+  }
+
+}
+
+function increment() {
+  var num = document.getElementById("number").value;
+  num++;
+  document.getElementById("number").value = num;
+}
+
+function decrement() {
+  
+  var num = document.getElementById("number").value;
+  if (num > 0) {
+    num--;
+    document.getElementById("number").value = num; 
+  }
+}
+
+function giveRipe() {
+
+  const topButton = document.getElementById("giving");
 
   //label for decrement
-  const label2 = document.createElement("label");
-  label2.setAttribute("for", "name");
-  label2.setAttribute("value", "How Ripe?");
+  const label2 = document.createElement("p");
+  label2.setAttribute("id", "receiveRipe");
+  label2.innerText = "How Ripe?";
+  topButton.appendChild(label2);
 
+  const unripe = document.createElement("button");
+  unripe.setAttribute("id", "unripe");
+  unripe.setAttribute("class", "buttons-beside");
+  unripe.innerText = "Unripe";
+  topButton.appendChild(unripe);
+
+  const ripe = document.createElement("button");
+  ripe.setAttribute("id", "ripe");
+  ripe.setAttribute("class", "buttons-beside");
+  ripe.innerText = "Ripe";
+  unripe.appendChild(ripe);
+
+  const overripe = document.createElement("button");
+  overripe.setAttribute("id", "ripe");
+  overripe.setAttribute("class", "buttons-beside");
+  overripe.innerText = "Overripe";
+  ripe.appendChild(overripe);
   
-    
 }
+
+// receiveRipe() {
+
+// }
 
 
 
