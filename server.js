@@ -12,6 +12,9 @@ const morgan = require("morgan");
 const userRouter = require("./routes/users");
 const User = require("./models/User");
 
+const Seek = require("./models/Seek");
+const Give = require("./models/Give");
+
 app.set("view engine", "ejs");
 
 app.use(express.static("./public"));
@@ -22,7 +25,6 @@ app.use("/user", userRouter);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
-
 
 app.post("/login", async (req, res) => {
   // console.log(req.body.username, req.body.password);
@@ -62,21 +64,20 @@ app.get("/", (req, res) => {
   res.render(path.join(__dirname, "/public/views/login.ejs"))
 });
 
+
 app.get("/home", (req, res) => {
   res.render(path.join(__dirname, "/public/views/index.ejs"));
 });
 
 app.route("/avomatcho") // index.js posts to db, match.js gets from db
   .post((req, res) => {
-    // reciving the below from the client (forms on index.html)
-
-
-    // response being a file
+    const { seek, quantity, location, ripeness, exchange } = req.body;
+    console.log(req.body);
+    res.send(req.body);
   })
-  .get((req, res) => {
-    
-    res.render(path.join(__dirname, "public/views/match.ejs"));
-  });
+  // .get((req, res) => {
+  // res.render(path.join(__dirname, "public/views/match.ejs"));
+  // });
 
 // Connect to the database, then start the server.
 const PORT = 5000;

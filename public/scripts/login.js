@@ -22,5 +22,5 @@ const postUserInfo = (e) => {
       window.location.replace("/home");
     }
   });
-}
+} 
 submitBtn.addEventListener("click", postUserInfo);

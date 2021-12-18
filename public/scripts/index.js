@@ -100,9 +100,9 @@ function receiveForm() {
   if (!receiveClicked) {
 
     const topButton = document.getElementById("looking");
-    const receiveForm = document.createElement("form");
+    const receiveForm = document.createElement("div");
     receiveForm.setAttribute("id", "receive-form");
-    receiveForm.setAttribute("action", "/avomatcho");
+    // receiveForm.setAttribute("action", "/avomatcho");
 
     // How Many?
     const label1 = document.createElement("p");
@@ -165,6 +165,7 @@ function receiveForm() {
     submitBtn.setAttribute("type", "submit");
     submitBtn.setAttribute("id", "submit-here");
     submitBtn.setAttribute("value", "Findocado!");
+    submitBtn.setAttribute("onclick", "postAvo()");
     receiveForm.appendChild(submitBtn);
 
     topButton.appendChild(receiveForm);
@@ -179,9 +180,9 @@ function giveForm() {
   if (!giveClicked) {
 
     const topButton = document.getElementById("giving");
-    const giveForm = document.createElement("form");
+    const giveForm = document.createElement("div");
     giveForm.setAttribute("id", "give-form");
-    giveForm.setAttribute("action", "/avomatcho");
+    // giveForm.setAttribute("action", "/avomatcho");
 
     // How Many?
     const label1 = document.createElement("p");
@@ -250,6 +251,7 @@ function giveForm() {
     submitBtn.setAttribute("type", "submit");
     submitBtn.setAttribute("id", "submit-here");
     submitBtn.setAttribute("value", "Findocado!");
+    submitBtn.setAttribute("onclick", "postAvo()");
     giveForm.appendChild(submitBtn);
 
     topButton.appendChild(giveForm);
@@ -272,8 +274,8 @@ function decrement() {
   }
 }
 
-const postAvo = (e) => {
-  e.preventDefault();
+function postAvo() {
+  // e.preventDefault();
   let seek;
   if (receiveClicked) {
     seek = true;
@@ -297,9 +299,12 @@ const postAvo = (e) => {
     body: JSON.stringify({
       seek, // Use this to determine the collection: seek or give
       quantity,
-      location,
+      // location,
       ripeness,
       exchange
     })
+  })
+  .then((res) => {
+    console.log(res.json());
   });
 }
