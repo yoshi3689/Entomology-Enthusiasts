@@ -1,0 +1,62 @@
+body {
+  height: 100vh;
+  background-image: url("../images/av_bg.jpg");
+  background-position: center;
+  background-size: cover;
+  display: grid;
+  align-items: center;
+}
+
+form {
+  margin: auto;
+  height: 66%;
+  width: 80%;
+  background-color: var(--avo-light);
+  text-align: center;
+  padding: 2rem 1rem;
+  border-radius: 2rem;
+}
+
+label {
+  white-space: nowrap;
+}
+
+fieldset {
+  border: none;
+  height: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+.inputs-container {
+  width: 100%;
+  border: none;
+  height: 100%;
+  display: grid;
+  align-items: center;
+}
+
+.input-wrapper {
+  /* width: 100%; */
+  padding: 2rem 20%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#submit {
+  width: 66%;
+  margin-top: 2rem;
+  align-self: start;
+  padding: .5rem .25rem;
+  border-radius: .5rem;
+  border: none;
+  background-color: var(--btn-accent);
+  transition: 250ms ease-in-out;
+}
+
+#submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.468);
+}
+
