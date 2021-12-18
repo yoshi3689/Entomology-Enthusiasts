@@ -1,22 +1,13 @@
-const {
-  model,
-  Schema
-} = require("mongoose");
+// const {
+//   model,
+//   Schema
+// } = require("mongoose");
 
-const userSchema = new Schema({
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
   username: String,
   password: String,
-  id: Number,
-  bd: Date,
-  location: {
-    x: Number,
-    y: Number
-  },
-  mostRecent: String
 });
 
-module.exports = model("User", userSchema);
-
-// seek: {
-//   }
-// over_ripe, ripe, under_ripe
+module.exports = mongoose.model("User", userSchema);

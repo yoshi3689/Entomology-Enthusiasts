@@ -1,54 +1,44 @@
-// go to the "server" directory and "npm start"
-// will start the server
-
+// To start server with nodemon, type "npm run devStart" in your terminal/cmd
 const express = require("express");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const PORT = 5000;
-
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+
+// https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples
 
 const userRouter = require("./routes/users");
 const User = require("./models/User");
 
+app.set("view engine", "ejs");
 
-// sets the view engine to ejs
-// app.set("view engine", "ejs");
+app.use(express.static("./public"));
 
 // logging out every request details
 app.use(morgan("common"));
 app.use("/user", userRouter);
-// setting the limit for the file size accepted for the request body
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
-// app.use(bodyParser.json({ limit: "25mb", extended: true }));
-// app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 
-// serving the files from the folder "views", 
-// (serves a different file depending on the user's current directory)
-app.use(express.static("./public"));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views/login.html"));
-});
-
-app.post('/login', async (req, res) => {
-  const { username, bd } = req.body;
-  console.log(req.body, "username: " + username, "bd: " + bd);
+app.post("/login", async (req, res) => {
+  // console.log(req.body.username, req.body.password);
+  const { username, password } = req.body;
   // find the user that has the same username
-  const user = await User.findOne(username);
+  const user = await User.findOne({ username });
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples
-  if (!user) {
+  if (user && user.password !== password) { // User exists, wrong password; send success: false
+    console.log("Wrong password.");
+    res.status(400).json({ success: false });
+  } else if (!user) { // Create new user; send success: true
     try {
-      console.log("the item not found, so we'll add this item");
+      console.log("Creating new user.");
       const newUser = new User({
-        id: 0,
         username,
-        bd,
+        password,
         location: {
           x: 0,
           y: 0
@@ -56,32 +46,46 @@ app.post('/login', async (req, res) => {
         mostRecent: null
       });
       newUser.save().then(() => {
-        console.log("new user added", newUser.username);
+        console.log("New user added", newUser.username);
+        res.status(200).json({ success: true });
       });
     } catch(err) {
       console.log(err);
     }
-  } else {
-    console.log("user found", username);
-    res.send(req.body);
-    // res.redirect(`/home/${username}`);
+  } else { //user exists, password correct; send success: true
+    console.log("User found: ", username);
+    res.status(200).json({ success: true });
   }
 });
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/views/index.html"));
-// });
 
 
-app.post("/matchfind", (req, res) => {
+app.get("/", (req, res) => {
+  res.render(path.join(__dirname, "/public/views/login.ejs"))
+});
+
+
+app.get("/home", (req, res) => {
+  res.render(path.join(__dirname, "/public/views/index.ejs"));
+
+});
+
+
+app.route("/avomatcho")
+  .get((req, res) => {
+    res.sendFile(path.join(__dirname, "public/views/match.html"));
+  })
+  .post((req, res) => {
   // reciving the below from the client (forms on index.html)
   // req.quantity
   // req.isRipe
   
   // response being a file
-})
+  });
+
 
 // Connect to the database, then start the server.
+const PORT = 5000;
 mongoose.connect(MONGOOSE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(PORT, () => console.log(`server running on port ${PORT}`)))
   .catch((err) => console.log(err));

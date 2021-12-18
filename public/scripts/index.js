@@ -107,6 +107,7 @@ function receiveForm() {
     const topButton = document.getElementById("looking");
     const receiveForm = document.createElement("form");
     receiveForm.setAttribute("id", "receive-form");
+    receiveForm.setAttribute("action", "/avomatcho");
 
     // How Many?
     const label1 = document.createElement("p");
@@ -184,6 +185,7 @@ function giveForm() {
     const topButton = document.getElementById("giving");
     const giveForm = document.createElement("form");
     giveForm.setAttribute("id", "give-form");
+    giveForm.setAttribute("action", "/avomatcho");
 
     // How Many?
     const label1 = document.createElement("p");
