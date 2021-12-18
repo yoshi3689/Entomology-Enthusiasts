@@ -1,0 +1,106 @@
+:root {
+    --btn-accent: #ebff67;
+    --avo-light: #AEBD4C;
+    --avo-dark: #4B7F08;
+    --avo-pit: #904F38;
+    --avo-skin: #325305;
+
+    --body-font: 'Poppins', sans-serif;
+
+
+}
+
+*, *::after, *::before
+ {
+  margin: 0 0;
+  padding: 0 0;
+}
+
+html {
+    font-size: 16px;
+    min-height: 100%;
+    font-family: var(--body-font)
+}
+
+body {
+    background: linear-gradient(45deg, var(--avo-light), var(--avo-dark));
+}
+
+h1 {
+    text-align: center;
+    padding: 1rem;
+    font-size: 45px;
+    animation: avomatcho-found ease-in-out 2s;
+}
+
+@keyframes avomatcho-found {
+    0% {
+        font-size: 0px;
+    }
+    30% {
+        font-size: 52px;
+    }
+    55%{
+        font-size: 52px;
+    }
+    100% {
+        font-size: 45px;
+    }
+} 
+
+#match-list {
+    width: 100vw;
+    display: none;
+    flex-direction: column;
+}
+
+.fade-in {
+    animation: fade 3s; 
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.match {
+    background-color: var(--btn-accent);
+    border-radius: 10px;
+    border: 2px solid var(--avo-skin);
+    width: 85vw;
+    min-width: 250px;
+    /* max-width: 750px; */
+    min-height: 3rem;
+    overflow: hidden;
+    margin: auto;
+    margin-top: 1rem;
+    padding: 0.5rem;
+}
+
+@media screen and (min-width: 700px) {
+    h1 {
+        text-align: center;
+        padding: 1rem;
+        font-size: 50px;
+        animation: avomatcho-found ease-in-out 2s;
+    }
+    
+    @keyframes avomatcho-found {
+        0% {
+            font-size: 0px;
+        }
+        30% {
+            font-size: 120px;
+        }
+        55%{
+            font-size: 120px;
+        }
+        100% {
+            font-size: 100px;
+        }
+    } 
+}
