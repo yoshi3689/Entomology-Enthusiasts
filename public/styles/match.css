@@ -6,8 +6,6 @@
     --avo-skin: #325305;
 
     --body-font: 'Poppins', sans-serif;
-
-
 }
 
 *, *::after, *::before
@@ -26,10 +24,38 @@ body {
     background: linear-gradient(45deg, var(--avo-light), var(--avo-dark));
 }
 
+#loader {
+    border: 10px solid var(--btn-accent);
+    border-radius: 50%;
+    border-top: 10px solid var(--avo-skin);
+    width: 80px;
+    height: 80px;
+    /* Safari */
+    -webkit-animation: spin 0.7s ease-in-out infinite; 
+    animation: spin 0.7s ease-in-out infinite;
+    margin: auto;
+    margin-top: 40vh;
+}
+  
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 h1 {
+    display: none;
     text-align: center;
     padding: 1rem;
     font-size: 45px;
+}
+
+.avomatcho-found {
     animation: avomatcho-found ease-in-out 2s;
 }
 
@@ -73,19 +99,27 @@ h1 {
     border: 2px solid var(--avo-skin);
     width: 85vw;
     min-width: 250px;
-    /* max-width: 750px; */
     min-height: 3rem;
     overflow: hidden;
     margin: auto;
     margin-top: 1rem;
     padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    transition: transform 0.5s;
+}
+
+.match:hover {
+    transform: scale(1.05, 1.05);
+    cursor: pointer;
 }
 
 @media screen and (min-width: 700px) {
     h1 {
         text-align: center;
         padding: 1rem;
-        font-size: 50px;
+        font-size: 100px;
         animation: avomatcho-found ease-in-out 2s;
     }
     
