@@ -7,7 +7,6 @@ let clicked = false;
 
 let receiveClicked = false;
 let giveClicked = false;
-let submitted = false;
 
 // expand the div element cliecked across the page
 
@@ -19,11 +18,11 @@ givingDiv.addEventListener("click", () => {
   lookingDiv.querySelector("p").classList.add("fade-out");
   logo.classList.add("logo-left");
   givingDiv.addEventListener("animationend",
-  () => {
-    givingDiv.classList.add("fullscreen");
-    logo.style.display = "none";
-  });
-  
+    () => {
+      givingDiv.classList.add("fullscreen");
+      logo.style.display = "none";
+    });
+
   if (!clicked) {
     givingClicked = true;
     insertButtons();
@@ -38,10 +37,10 @@ lookingDiv.addEventListener("click", () => {
   givingDiv.querySelector("p").classList.add("fade-out");
   logo.classList.add("logo-right");
   lookingDiv.addEventListener("animationend",
-  () => {
-    lookingDiv.classList.add("fullscreen");
-    logo.style.display = "none";
-  });
+    () => {
+      lookingDiv.classList.add("fullscreen");
+      logo.style.display = "none";
+    });
 
   if (!clicked) {
     lookingClicked = true;
@@ -50,18 +49,14 @@ lookingDiv.addEventListener("click", () => {
   }
 });
 
-// crates buttons and insert them into a div clicked
+// creates buttons and insert them into a div clicked
 function insertButtons() {
-  // const btn1 = document.createElement("button");
-  // const btn2 = document.createElement("button");
-  // btn1.innerText = "just receive";
-  // btn2.innerText = "exchange";
   const btnDiv = document.createElement("div");
 
   if (lookingClicked) {
     btnDiv.innerHTML = `
-      <button id="receive" onclick=manyRipeReceive()>To Receive</button>
-      <button id="exchange" onclick=manyRipeLookingExchange()>To Exchange</button>`;
+      <button id="receive" onclick=receive()>To Receive</button>
+      <button id="exchange" onclick=receiveExchange()>To Exchange</button>`;
 
     lookingDiv.appendChild(btnDiv);
     btnDiv.classList.add("fade-in");
@@ -69,9 +64,9 @@ function insertButtons() {
 
   } else if (givingClicked) {
     btnDiv.innerHTML = `
-      <button id="give" onclick=manyRipeGive()>To Give</button>
-      <button id="exchange" onclick=manyRipeGivingExchange()>To Exchange</button>`;
-      
+      <button id="give" onclick=give()>To Give</button>
+      <button id="exchange" onclick=giveExchange()>To Exchange</button>`;
+
     givingDiv.appendChild(btnDiv);
     btnDiv.classList.add("fade-in");
     btnDiv.classList.add("buttons-beside");
@@ -80,67 +75,60 @@ function insertButtons() {
 }
 
 
-function manyRipeReceive() {
+function receive() {
   document.getElementById("exchange").style.display = "none";
 
-  receiveHowMany();
-  receiveRipe();
-  receiveSubmitBtn();
+  receiveForm();
 }
 
-function manyRipeLookingExchange() {
+function receiveExchange() {
   document.getElementById("receive").style.display = "none";
 
-  receiveHowMany();
-  receiveRipe();
-  receiveSubmitBtn();
+  receiveForm();
 }
 
-function manyRipeGive() {
+function give() {
   document.getElementById("exchange").style.display = "none";
 
-  giveHowMany();
-  giveRipe();
-  giveSubmitBtn();
+  giveForm();
 }
 
-function manyRipeGivingExchange() {
+function giveExchange() {
   document.getElementById("give").style.display = "none";
 
-  giveHowMany();
-  giveRipe();
-  giveSubmitBtn();
+  giveForm();
 }
 
 
-function receiveHowMany() {
+function receiveForm() {
 
   if (!receiveClicked) {
 
     const topButton = document.getElementById("looking");
-    const numberContainer = document.createElement("form");
-    numberContainer.setAttribute("id", "number-container");
+    const receiveForm = document.createElement("form");
+    receiveForm.setAttribute("id", "receive-form");
 
-    //label for How Many
+    // How Many?
     const label1 = document.createElement("p");
     label1.setAttribute("id", "receiveHowMany");
     label1.innerText = "How Many?";
-    topButton.appendChild(label1);
-    
+    receiveForm.appendChild(label1);
+
+    const numDiv = document.createElement("div");
+    numDiv.setAttribute("id", "form-item-container");
+
     // Decrement Button
     const decrementBtn = document.createElement("input");
     decrementBtn.setAttribute("id", "decrement");
     decrementBtn.setAttribute("type", "button");
     decrementBtn.setAttribute("value", " - ");
-    // decrementBtn.setAttribute("onclick", decrement);
     decrementBtn.addEventListener("click", decrement);
-    // decrement.setAttribute("class", "buttons-beside");
-    numberContainer.appendChild(decrementBtn);
+    numDiv.appendChild(decrementBtn);
 
     const number = document.createElement("input");
     number.setAttribute("id", "number");
     number.setAttribute("value", 0);
-    numberContainer.appendChild(number);
+    numDiv.appendChild(number);
 
     // Increment Button
     const incrementBtn = document.createElement("input");
@@ -148,43 +136,77 @@ function receiveHowMany() {
     incrementBtn.setAttribute("type", "button");
     incrementBtn.setAttribute("value", " + ");
     incrementBtn.addEventListener("click", increment);
-    // incrementBtn.setAttribute("onclick", increment);
-    // incrementBtn.setAttribute("class", "buttons-beside");
-    numberContainer.appendChild(incrementBtn);
+    numDiv.appendChild(incrementBtn);
 
-    topButton.appendChild(numberContainer);
+    receiveForm.appendChild(numDiv);
 
+    // How Ripe?
+    const label2 = document.createElement("p");
+    label2.setAttribute("id", "receiveRipe");
+    label2.innerText = "How Ripe?";
+    receiveForm.appendChild(label2);
+
+    //Div for checkboxes
+    const checkDiv = document.createElement("div");
+    checkDiv.setAttribute("id", "ck-button");
+
+    checkDiv.innerHTML = `
+      <label for="underripe">
+        <input id="underripe" type="checkbox"><span>Underripe</span>
+      </label>
+      <label for="ripe">
+        <input id="ripe" type="checkbox"><span>Ripe</span>
+      </label>
+      <label for="overripe">
+        <input id="overripe" type="checkbox"><span>Overripe</span>
+      </label>
+      `;
+
+    receiveForm.appendChild(checkDiv);
+
+    // Submit Button
+    const submitBtn = document.createElement("input");
+    submitBtn.setAttribute("type", "submit");
+    submitBtn.setAttribute("id", "submit-here");
+    submitBtn.setAttribute("value", "Findocado!");
+    receiveForm.appendChild(submitBtn);
+
+    topButton.appendChild(receiveForm);
+
+    receiveClicked = true;
   }
-
 }
 
-
-function giveHowMany() {
+function giveForm() {
 
   if (!giveClicked) {
 
     const topButton = document.getElementById("giving");
-    const numberContainer = document.createElement("form");
-    numberContainer.setAttribute("id", "number-container");
+    const giveForm = document.createElement("form");
+    giveForm.setAttribute("id", "give-form");
 
-    //label for How Many
+    // How Many?
     const label1 = document.createElement("p");
     label1.setAttribute("id", "giveHowMany");
     label1.innerText = "How Many?";
-    topButton.appendChild(label1);
-    
+    giveForm.appendChild(label1);
+
+    // Create div for num avos
+    const numDiv = document.createElement("div");
+    numDiv.setAttribute("id", "form-item-container");
+
     // Decrement Button
     const decrementBtn = document.createElement("input");
     decrementBtn.setAttribute("id", "decrement");
     decrementBtn.setAttribute("type", "button");
     decrementBtn.setAttribute("value", " - ");
     decrementBtn.addEventListener("click", decrement);
-    numberContainer.appendChild(decrementBtn);
+    numDiv.appendChild(decrementBtn);
 
     const number = document.createElement("input");
     number.setAttribute("id", "number");
     number.setAttribute("value", 0);
-    numberContainer.appendChild(number);
+    numDiv.appendChild(number);
 
     // Increment Button
     const incrementBtn = document.createElement("input");
@@ -192,143 +214,62 @@ function giveHowMany() {
     incrementBtn.setAttribute("type", "button");
     incrementBtn.setAttribute("value", " + ");
     incrementBtn.addEventListener("click", increment);
-    // incrementBtn.setAttribute("onclick", increment);
-    numberContainer.appendChild(incrementBtn);
+    numDiv.appendChild(incrementBtn);
 
-    topButton.appendChild(numberContainer);
+    // Append div for num avos
+    giveForm.appendChild(numDiv);
 
+    // How Ripe?
+    const label2 = document.createElement("p");
+    label2.setAttribute("id", "giveRipe");
+    label2.innerText = "How Ripe?";
+    giveForm.appendChild(label2);
+
+    const checkDiv = document.createElement("div");
+    checkDiv.setAttribute("id", "ck-button");
+
+
+    // Create checkboxes
+    checkDiv.innerHTML = 
+      `<label for="underripe">
+        <input id="underripe" type="checkbox">
+        <span>Underripe</span>
+      </label>
+      <label for="ripe">
+        <input id="ripe" type="checkbox">
+        <span>Ripe</span>
+      </label>
+      <label for="overripe">
+        <input id="overripe" type="checkbox">
+        <span>Overripe</span>
+      </label>
+      `;
+    
+    giveForm.appendChild(checkDiv);
+
+    // Submit Button
+    const submitBtn = document.createElement("input");
+    submitBtn.setAttribute("type", "submit");
+    submitBtn.setAttribute("id", "submit-here");
+    submitBtn.setAttribute("value", "Findocado!");
+    giveForm.appendChild(submitBtn);
+
+    topButton.appendChild(giveForm);
+
+    giveClicked = true;
   }
-
 }
 
 function increment() {
-  // console.log(document.getElementById("number").value);
   let num = document.getElementById("number").value;
   num++;
   document.getElementById("number").value = num;
 }
 
 function decrement() {
-  // console.log(document.getElementById("number").value);
   let num = document.getElementById("number").value;
   if (num > 0) {
     num--;
-    document.getElementById("number").value = num; 
+    document.getElementById("number").value = num;
   }
 }
-
-function giveRipe() {
-
-  if (!giveClicked) {
-
-  const topButton = document.getElementById("giving");
-  const ripeContainer = document.createElement("form");
-  ripeContainer.setAttribute("id", "ripe-container");
-
-  //label for decrement
-  const label2 = document.createElement("p");
-  label2.setAttribute("id", "receiveRipe");
-  label2.innerText = "How Ripe?";
-  topButton.appendChild(label2);
-
-  const underripe = document.createElement("button");
-  underripe.setAttribute("id", "Underripe");
-  underripe.setAttribute("class", "buttons-beside");
-  underripe.innerText = "Underripe";
-  ripeContainer.appendChild(underripe);
-
-  const ripe = document.createElement("button");
-  ripe.setAttribute("id", "ripe");
-  ripe.setAttribute("class", "buttons-beside");
-  ripe.innerText = "Ripe";
-  ripeContainer.appendChild(ripe);
-
-  const overripe = document.createElement("button");
-  overripe.setAttribute("id", "ripe");
-  overripe.setAttribute("class", "buttons-beside");
-  overripe.innerText = "Overripe";
-  ripeContainer.appendChild(overripe);
-
-  topButton.appendChild(ripeContainer);
-
-  }
-
-  giveClicked = true;
-  
-}
-
-function receiveRipe() {
-
-  if (!receiveClicked) {
-
-  const topButton = document.getElementById("looking");
-  const ripeContainer = document.createElement("form");
-  ripeContainer.setAttribute("id", "ripe-container");
-
-  //label for decrement
-  const label2 = document.createElement("p");
-  label2.setAttribute("id", "receiveRipe");
-  label2.innerText = "How Ripe?";
-  topButton.appendChild(label2);
-
-  const underripe = document.createElement("button");
-  underripe.setAttribute("id", "Underripe");
-  underripe.setAttribute("class", "buttons-beside");
-  underripe.innerText = "Underripe";
-  ripeContainer.appendChild(underripe);
-
-  const ripe = document.createElement("button");
-  ripe.setAttribute("id", "ripe");
-  ripe.setAttribute("class", "buttons-beside");
-  ripe.innerText = "Ripe";
-  ripeContainer.appendChild(ripe);
-
-  const overripe = document.createElement("button");
-  overripe.setAttribute("id", "ripe");
-  overripe.setAttribute("class", "buttons-beside");
-  overripe.innerText = "Overripe";
-  ripeContainer.appendChild(overripe);
-
-  topButton.appendChild(ripeContainer);
-
-  }
-
-  receiveClicked = true;
-
-}
-
-function receiveSubmitBtn() {
-
-  if (!submitted) {
-
-    const topButton = document.getElementById("looking");
-
-    const submitBtn = document.createElement("input");
-    submitBtn.setAttribute("type", "submit");
-    submitBtn.setAttribute("id", "submit-here");
-    submitBtn.setAttribute("value", "Findocado!");  
-
-    topButton.appendChild(submitBtn);
-    
-    submitted = true;
-  }
-}
-
-function giveSubmitBtn() {
-
-  if (!submitted) {
-
-    const topButton = document.getElementById("giving");
-
-    const submitBtn = document.createElement("input");
-    submitBtn.setAttribute("type", "submit");
-    submitBtn.setAttribute("id", "submit-here");
-    submitBtn.setAttribute("value", "Findocado!");  
-
-    topButton.appendChild(submitBtn);
-
-    submitted = true;
-  }
-
-}
-
