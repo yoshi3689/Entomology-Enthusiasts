@@ -1,5 +1,6 @@
 const matcho = document.querySelector("h1");
 const matchList = document.getElementById("match-list");
+const loader = document.getElementById("loader");
 
 async function dbParsed() {
     // await database parsing
@@ -14,11 +15,15 @@ async function dbParsed() {
     }   
 
     // use animations to show divs
-    matcho.style.display = "block";
-    matcho.classList.add("avomatcho-found");
-    matcho.addEventListener("animationend", () => {
-        matchList.classList.add("fade-in");
-        matchList.style.display = "flex";
+    loader.classList.add("fade-out");
+    loader.addEventListener("animationend", () => {
+        loader.style.display = "none";
+        matcho.style.display = "block";
+        matcho.classList.add("avomatcho-found");
+        matcho.addEventListener("animationend", () => {
+            matchList.classList.add("fade-in");
+            matchList.style.display = "flex";
+        });
     });
 }
 setTimeout(dbParsed, 3000);
