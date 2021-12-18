@@ -4,9 +4,10 @@ const givingDiv = document.getElementById("giving");
 let lookingClicked = false;
 let givingClicked = false;
 let clicked = false;
+
 let receiveClicked = false;
-let exchangeClicked = false;
 let giveClicked = false;
+let submitted = false;
 
 // expand the div element cliecked across the page
 
@@ -59,8 +60,8 @@ function insertButtons() {
 
   if (lookingClicked) {
     btnDiv.innerHTML = `
-      <button class="receive" onclick="manyRipe()">To Receive</button>
-      <button class="exchange" onclick="manyRipe()">To Exchange</button>`;
+      <button id="receive" onclick=manyRipeReceive()>To Receive</button>
+      <button id="exchange" onclick=manyRipeLookingExchange()>To Exchange</button>`;
 
     lookingDiv.appendChild(btnDiv);
     btnDiv.classList.add("fade-in");
@@ -68,8 +69,8 @@ function insertButtons() {
 
   } else if (givingClicked) {
     btnDiv.innerHTML = `
-      <button class="give" onclick="manyRipe()">To Give</button>
-      <button class="exchange" onclick="manyRipe()">To Exchange</button>`;
+      <button id="give" onclick=manyRipeGive()>To Give</button>
+      <button id="exchange" onclick=manyRipeGivingExchange()>To Exchange</button>`;
       
     givingDiv.appendChild(btnDiv);
     btnDiv.classList.add("fade-in");
@@ -78,84 +79,256 @@ function insertButtons() {
 
 }
 
-function manyRipe() {
+
+function manyRipeReceive() {
+  document.getElementById("exchange").style.display = "none";
+
+  receiveHowMany();
+  receiveRipe();
+  receiveSubmitBtn();
+}
+
+function manyRipeLookingExchange() {
+  document.getElementById("receive").style.display = "none";
+
+  receiveHowMany();
+  receiveRipe();
+  receiveSubmitBtn();
+}
+
+function manyRipeGive() {
+  document.getElementById("exchange").style.display = "none";
+
+  giveHowMany();
+  giveRipe();
+  giveSubmitBtn();
+}
+
+function manyRipeGivingExchange() {
+  document.getElementById("give").style.display = "none";
+
+  giveHowMany();
+  giveRipe();
+  giveSubmitBtn();
+}
+
+
+function receiveHowMany() {
 
   if (!receiveClicked) {
-    receiveClicked = true;
-        
+
+    const topButton = document.getElementById("looking");
+    const numberContainer = document.createElement("form");
+    numberContainer.setAttribute("id", "number-container");
+
+    //label for How Many
+    const label1 = document.createElement("p");
+    label1.setAttribute("id", "receiveHowMany");
+    label1.innerText = "How Many?";
+    topButton.appendChild(label1);
+    
+    // Decrement Button
+    const decrementBtn = document.createElement("input");
+    decrementBtn.setAttribute("id", "decrement");
+    decrementBtn.setAttribute("type", "button");
+    decrementBtn.setAttribute("value", " - ");
+    // decrementBtn.setAttribute("onclick", decrement);
+    decrementBtn.addEventListener("click", decrement);
+    // decrement.setAttribute("class", "buttons-beside");
+    numberContainer.appendChild(decrementBtn);
+
+    const number = document.createElement("input");
+    number.setAttribute("id", "number");
+    number.setAttribute("value", 0);
+    numberContainer.appendChild(number);
+
+    // Increment Button
+    const incrementBtn = document.createElement("input");
+    incrementBtn.setAttribute("id", "increment");
+    incrementBtn.setAttribute("type", "button");
+    incrementBtn.setAttribute("value", " + ");
+    incrementBtn.addEventListener("click", increment);
+    // incrementBtn.setAttribute("onclick", increment);
+    // incrementBtn.setAttribute("class", "buttons-beside");
+    numberContainer.appendChild(incrementBtn);
+
+    topButton.appendChild(numberContainer);
 
   }
 
-  document.getElementsByClassName();
+}
 
-  howMany();
-  ripe();
+
+function giveHowMany() {
+
+  if (!giveClicked) {
+
+    const topButton = document.getElementById("giving");
+    const numberContainer = document.createElement("form");
+    numberContainer.setAttribute("id", "number-container");
+
+    //label for How Many
+    const label1 = document.createElement("p");
+    label1.setAttribute("id", "giveHowMany");
+    label1.innerText = "How Many?";
+    topButton.appendChild(label1);
+    
+    // Decrement Button
+    const decrementBtn = document.createElement("input");
+    decrementBtn.setAttribute("id", "decrement");
+    decrementBtn.setAttribute("type", "button");
+    decrementBtn.setAttribute("value", " - ");
+    decrementBtn.addEventListener("click", decrement);
+    numberContainer.appendChild(decrementBtn);
+
+    const number = document.createElement("input");
+    number.setAttribute("id", "number");
+    number.setAttribute("value", 0);
+    numberContainer.appendChild(number);
+
+    // Increment Button
+    const incrementBtn = document.createElement("input");
+    incrementBtn.setAttribute("id", "increment");
+    incrementBtn.setAttribute("type", "button");
+    incrementBtn.setAttribute("value", " + ");
+    incrementBtn.addEventListener("click", increment);
+    // incrementBtn.setAttribute("onclick", increment);
+    numberContainer.appendChild(incrementBtn);
+
+    topButton.appendChild(numberContainer);
+
+  }
+
 }
 
 function increment() {
-  
+  // console.log(document.getElementById("number").value);
+  let num = document.getElementById("number").value;
+  num++;
+  document.getElementById("number").value = num;
 }
 
 function decrement() {
-
+  // console.log(document.getElementById("number").value);
+  let num = document.getElementById("number").value;
+  if (num > 0) {
+    num--;
+    document.getElementById("number").value = num; 
+  }
 }
 
+function giveRipe() {
 
-function howMany() {
+  if (!giveClicked) {
 
-    //label for How Many
-    const label1 = document.createElement("label");
-    label1.setAttribute("for", "name");
-    label1.setAttribute("value", "How Many?");
-
-  
-    // Increment Button
-    const increment = document.createElement("input");
-    increment.setAttribute("type", "button");
-    increment.setAttribute("value", "+");
-    increment.setAttribute("onclick", "increment()");
-
-    
-    // Decrement Button
-    const decrement = document.createElement("input")
-    decrement.setAttribute("type", "button");
-    decrement.setAttribute("value", "-");
-    decrement.setAttribute("onclick", "decrement()");
-
-}
-
-function ripe() {
+  const topButton = document.getElementById("giving");
+  const ripeContainer = document.createElement("form");
+  ripeContainer.setAttribute("id", "ripe-container");
 
   //label for decrement
-  const label2 = document.createElement("label");
-  label2.setAttribute("for", "name");
-  label2.setAttribute("value", "How Ripe?");
+  const label2 = document.createElement("p");
+  label2.setAttribute("id", "receiveRipe");
+  label2.innerText = "How Ripe?";
+  topButton.appendChild(label2);
 
+  const underripe = document.createElement("button");
+  underripe.setAttribute("id", "Underripe");
+  underripe.setAttribute("class", "buttons-beside");
+  underripe.innerText = "Underripe";
+  ripeContainer.appendChild(underripe);
+
+  const ripe = document.createElement("button");
+  ripe.setAttribute("id", "ripe");
+  ripe.setAttribute("class", "buttons-beside");
+  ripe.innerText = "Ripe";
+  ripeContainer.appendChild(ripe);
+
+  const overripe = document.createElement("button");
+  overripe.setAttribute("id", "ripe");
+  overripe.setAttribute("class", "buttons-beside");
+  overripe.innerText = "Overripe";
+  ripeContainer.appendChild(overripe);
+
+  topButton.appendChild(ripeContainer);
+
+  }
+
+  giveClicked = true;
   
-    
 }
 
+function receiveRipe() {
 
+  if (!receiveClicked) {
 
-// const expandDiv = e => {
+  const topButton = document.getElementById("looking");
+  const ripeContainer = document.createElement("form");
+  ripeContainer.setAttribute("id", "ripe-container");
 
-//   if (e.target.tagName === "P") {
-//     e.target.parentNode.setAttribute("class", "div-toggle");
-//   }
-//   else if (e.target.tagName === "DIV") {
-//     e.target.setAttribute("class", "div-toggle");
-//   }
-// }
+  //label for decrement
+  const label2 = document.createElement("p");
+  label2.setAttribute("id", "receiveRipe");
+  label2.innerText = "How Ripe?";
+  topButton.appendChild(label2);
 
-// const receiveExchange = e => {
-//   console.log(e);
-//   const receive = document.createElement("p");
-//   const exchange = document.createElement("p");
-// }
+  const underripe = document.createElement("button");
+  underripe.setAttribute("id", "Underripe");
+  underripe.setAttribute("class", "buttons-beside");
+  underripe.innerText = "Underripe";
+  ripeContainer.appendChild(underripe);
 
-// lookingDiv.addEventListener("click", expandDiv);
-// lookingDiv.addEventListener("click", receiveExchange);
+  const ripe = document.createElement("button");
+  ripe.setAttribute("id", "ripe");
+  ripe.setAttribute("class", "buttons-beside");
+  ripe.innerText = "Ripe";
+  ripeContainer.appendChild(ripe);
 
-// givingDiv.addEventListener("click", expandDiv);
+  const overripe = document.createElement("button");
+  overripe.setAttribute("id", "ripe");
+  overripe.setAttribute("class", "buttons-beside");
+  overripe.innerText = "Overripe";
+  ripeContainer.appendChild(overripe);
 
+  topButton.appendChild(ripeContainer);
+
+  }
+
+  receiveClicked = true;
+
+}
+
+function receiveSubmitBtn() {
+
+  if (!submitted) {
+
+    const topButton = document.getElementById("looking");
+
+    const submitBtn = document.createElement("input");
+    submitBtn.setAttribute("type", "submit");
+    submitBtn.setAttribute("id", "submit-here");
+    submitBtn.setAttribute("value", "Findocado!");  
+
+    topButton.appendChild(submitBtn);
+    
+    submitted = true;
+  }
+}
+
+function giveSubmitBtn() {
+
+  if (!submitted) {
+
+    const topButton = document.getElementById("giving");
+
+    const submitBtn = document.createElement("input");
+    submitBtn.setAttribute("type", "submit");
+    submitBtn.setAttribute("id", "submit-here");
+    submitBtn.setAttribute("value", "Findocado!");  
+
+    topButton.appendChild(submitBtn);
+
+    submitted = true;
+  }
+
+}
 
