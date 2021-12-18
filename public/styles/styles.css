@@ -125,6 +125,7 @@ button {
   border: none;
   white-space: nowrap;
   margin: 10%;
+  transition: transform 0.5s;
 }
 
 .buttons-beside {
@@ -133,13 +134,16 @@ button {
     justify-content: space-evenly;   
 }
 
-#ripe-container {
+/* Forms */
+#give-form,
+#receive-form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
+    width: 50vw;
 }
 
-#number-container {
+#form-item-container {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -161,26 +165,49 @@ button {
     margin-top: 10px;
     /* color: var(--avo-dark); */
 }
-#increment{
+
+#increment,
+#decrement {
     background-color: var(--avo-button);
-    border: none;
-    border-radius: 4px;
-    padding: 11px;
+    border: 1px solid var(--avo-skin);
+    border-radius: 50%;
+    min-width: 2rem;
+    min-height: 2rem;
     margin-top: 26px;
     margin-bottom: 26px;
     font-size: 20px;
     outline: none;
 }
 
-#decrement{
-    background-color: var(--avo-button);
-    border: none;
-    border-radius: 4px;
-    padding: 11px;
-    margin-top: 26px;
-    margin-bottom: 26px;
-    outline: none;
-    font-size: 20px;
+#ck-button {
+    margin:4px;
+    background-color: var(--btn-accent);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#ck-button label {
+    float: left;
+    width: 4.0em;
+    border: 1px solid var(--avo-skin);
+    width: 33%;
+}
+
+#ck-button label span {
+    text-align:center;
+    padding:3px 0px;
+    display:block;
+}
+
+#ck-button label input {
+    position:absolute;
+    top:-20px;
+}
+
+#ck-button input:checked + span {
+    background-color: var(--avo-pit);
+    color:#fff;
 }
 
 #submit-here {
@@ -188,10 +215,16 @@ button {
     border-radius: 4px;
     border: none;
     background-color: var(--btn-accent);
-    margin-top: 20px;
-    justify-self: center;
+    margin: auto;
+    margin-top: 1rem;
     font-size: large;
-    
+    width: 50%;
+    transition: transform 0.5s;
+}
+
+button:hover,
+#submit-here:hover {
+    transform: scale(1.05, 1.05);
 }
 
 @media screen and (min-width: 700px) {
