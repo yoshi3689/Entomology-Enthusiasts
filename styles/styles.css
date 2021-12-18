@@ -1,8 +1,11 @@
 :root {
+    --btn-accent: #ebff67;
     --avo-light: #AEBD4C;
     --avo-dark: #4B7F08;
     --avo-pit: #904F38;
     --avo-skin: #325305;
+
+    --body-font: 'Poppins', sans-serif;
 }
 
 *, *::after, *::before
@@ -14,7 +17,7 @@
 html {
     font-size: 16px;
     min-height: 100%;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--body-font)
 }
 
 #avoyy-logo {
@@ -43,9 +46,11 @@ html {
 #looking, 
 #giving {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    justify-content: center;
     align-items: center;
-    display: grid;
     overflow: hidden;
 }
 
@@ -61,23 +66,29 @@ p {
   align-self: center;
   justify-self: center;
   font-size: 150%;
-  /* background-color: var(--avo-pit); */
   border-radius: 10px;
   padding: 10px;
   /* prevents the text from spaning over multiple lines */
   white-space: nowrap;
 }
 
-
-
 /* Animations for giving and looking divs to fill screen. */
 .div-fill {
     animation: fill-screen 1s;
 }
 
+.fade-out {
+    animation: fade 1s;
+}
+
+.fade-in {
+    animation: fade 1s reverse;
+}
+
 .fullscreen {
     width: 100vw;
 }
+
 
 @keyframes fill-screen {
     0% {
@@ -89,25 +100,40 @@ p {
 }
 
 @keyframes slide-logo-left {
-    0% {
-        transform: translate(-50%, -25%);
-    }
-    100% {
-        transform: translate(-100vw, -25%);
-    }
+    0% { transform: translate(-50%, -10%); }
+    100% { transform: translate(-100vw, -10%); }
 }
+
 @keyframes slide-logo-right {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(100vw);
-    }
+    0% { transform: translate(-50%, -10%); }
+    100% { transform: translate(100vw, -10%); }
+}
+
+@keyframes fade {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
 }
 /*-- End of animations for giving and looking divs. --*/
 
+
 button {
   padding: 10px;
-  background-color: var(--avo-pit);
-  display: inline-block;
+  background-color: var(--btn-accent);
+  font-family: var(--body-font);
+  border-radius: 10px;
+  border: none;
+  white-space: nowrap;
+  margin: 10%;
+}
+
+.buttons-beside {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;   
+}
+
+@media screen and (min-width: 700px) {
+    html {
+        font-size: 24px;
+    }
 }

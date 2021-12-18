@@ -4,6 +4,9 @@ const givingDiv = document.getElementById("giving");
 let lookingClicked = false;
 let givingClicked = false;
 let clicked = false;
+let receiveClicked = false;
+let exchangeClicked = false;
+let giveClicked = false;
 
 // expand the div element cliecked across the page
 
@@ -12,10 +15,12 @@ let clicked = false;
 // Giving path
 givingDiv.addEventListener("click", () => {
   givingDiv.classList.add("div-fill");
+  lookingDiv.querySelector("p").classList.add("fade-out");
   logo.classList.add("logo-left");
   givingDiv.addEventListener("animationend",
   () => {
     givingDiv.classList.add("fullscreen");
+    logo.style.display = "none";
   });
   
   if (!clicked) {
@@ -23,17 +28,18 @@ givingDiv.addEventListener("click", () => {
     insertButtons();
     clicked = true;
   }
-  // givingDiv.appendChild(insertButtons());
-  
-})
+});
 
 
 // Looking path
 lookingDiv.addEventListener("click", () => {
   lookingDiv.classList.add("div-fill");
+  givingDiv.querySelector("p").classList.add("fade-out");
+  logo.classList.add("logo-right");
   lookingDiv.addEventListener("animationend",
   () => {
     lookingDiv.classList.add("fullscreen");
+    logo.style.display = "none";
   });
 
   if (!clicked) {
@@ -41,26 +47,95 @@ lookingDiv.addEventListener("click", () => {
     insertButtons();
     clicked = true;
   }
-  // insertButtons();
-})
+});
 
 // crates buttons and insert them into a div clicked
 function insertButtons() {
-  const btn1 = document.createElement("button");
-  const btn2 = document.createElement("button");
-  btn1.innerText = "just receive";
-  btn2.innerText = "exchange";
+  // const btn1 = document.createElement("button");
+  // const btn2 = document.createElement("button");
+  // btn1.innerText = "just receive";
+  // btn2.innerText = "exchange";
+  const btnDiv = document.createElement("div");
 
   if (lookingClicked) {
-    lookingDiv.appendChild(btn1);
-    lookingDiv.appendChild(btn2);
+    btnDiv.innerHTML = `
+      <button class="receive" onclick="manyRipe()">To Receive</button>
+      <button class="exchange" onclick="manyRipe()">To Exchange</button>`;
+
+    lookingDiv.appendChild(btnDiv);
+    btnDiv.classList.add("fade-in");
+    btnDiv.classList.add("buttons-beside");
 
   } else if (givingClicked) {
-    givingDiv.appendChild(btn1);
-    givingDiv.appendChild(btn2);
+    btnDiv.innerHTML = `
+      <button class="give" onclick="manyRipe()">To Give</button>
+      <button class="exchange" onclick="manyRipe()">To Exchange</button>`;
+      
+    givingDiv.appendChild(btnDiv);
+    btnDiv.classList.add("fade-in");
+    btnDiv.classList.add("buttons-beside");
   }
 
 }
+
+function manyRipe() {
+
+  if (!receiveClicked) {
+    receiveClicked = true;
+        
+
+  }
+
+  document.getElementsByClassName();
+
+  howMany();
+  ripe();
+}
+
+function increment() {
+  
+}
+
+function decrement() {
+
+}
+
+
+function howMany() {
+
+    //label for How Many
+    const label1 = document.createElement("label");
+    label1.setAttribute("for", "name");
+    label1.setAttribute("value", "How Many?");
+
+  
+    // Increment Button
+    const increment = document.createElement("input");
+    increment.setAttribute("type", "button");
+    increment.setAttribute("value", "+");
+    increment.setAttribute("onclick", "increment()");
+
+    
+    // Decrement Button
+    const decrement = document.createElement("input")
+    decrement.setAttribute("type", "button");
+    decrement.setAttribute("value", "-");
+    decrement.setAttribute("onclick", "decrement()");
+
+}
+
+function ripe() {
+
+  //label for decrement
+  const label2 = document.createElement("label");
+  label2.setAttribute("for", "name");
+  label2.setAttribute("value", "How Ripe?");
+
+  
+    
+}
+
+
 
 // const expandDiv = e => {
 
