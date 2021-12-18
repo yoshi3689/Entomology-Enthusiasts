@@ -66,22 +66,27 @@ app.post("/login", async (req, res) => {
   } else {
     console.log("user found", username);
     res.send(req.body);
-    res.redirect();
+    res.redirect("/home");
   }
 });
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/views/index.html"));
-// });
+app.get("/home", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views/index.html"));
+});
 
 
-app.post("/matchfind", (req, res) => {
+app.route("/avomatcho")
+  .get((req, res) => {
+    res.sendFile(path.join(__dirname, "public/views/match.html"));
+  })
+  .post((req, res) => {
   // reciving the below from the client (forms on index.html)
   // req.quantity
   // req.isRipe
   
   // response being a file
-})
+  });
+
 
 // Connect to the database, then start the server.
 mongoose.connect(MONGOOSE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
