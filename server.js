@@ -27,6 +27,19 @@ app.use(express.static("./public"));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views/index.html"));
+});
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "public/views/index.html"));
+// });
+
+
+app.post("/matchfind", (req, res) => {
+  // reciving the below from the client (forms on index.html)
+  // req.quantity
+  // req.isRipe
+  
+  // 
 })
 
 // Connect to the database, then start the server.
