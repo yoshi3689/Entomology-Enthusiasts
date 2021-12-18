@@ -1,9 +1,11 @@
-const {
-  model,
-  Schema
-} = require("mongoose");
+// const {
+//   model,
+//   Schema
+// } = require("mongoose");
 
-const userSchema = new Schema({
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   id: Number,
@@ -15,7 +17,7 @@ const userSchema = new Schema({
   mostRecent: String
 });
 
-module.exports = model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);
 
 // seek: {
 //   }

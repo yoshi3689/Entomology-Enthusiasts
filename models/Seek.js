@@ -14,7 +14,7 @@ const seekSchema = new Schema({
   exchange: Boolean,
   time: {
     type: Date,
-    default: Date.now
+    default: () => Date.now
   },
   postedBy: {
     type: Schema.Types.ObjectId,
