@@ -1,6 +1,4 @@
-// go to the "server" directory and "npm start"
-// will start the server
-
+// To start server with nodemon, type "npm run devStart" in your terminal/cmd
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -14,6 +12,9 @@ const morgan = require("morgan");
 const userRouter = require("./routes/users");
 const User = require("./models/User");
 
+// setting the limit for the file size accepted for the request body
+// app.use(bodyParser.json({ limit: "25mb", extended: true }));
+// app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 
 // sets the view engine to ejs
 // app.set("view engine", "ejs");
@@ -21,11 +22,11 @@ const User = require("./models/User");
 // logging out every request details
 app.use(morgan("common"));
 app.use("/user", userRouter);
-// setting the limit for the file size accepted for the request body
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
-// app.use(bodyParser.json({ limit: "25mb", extended: true }));
-// app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
+
 
 // serving the files from the folder "views", 
 // (serves a different file depending on the user's current directory)
@@ -35,9 +36,10 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views/login.html"));
 });
 
-app.post('/login', async (req, res) => {
-  const { username, bd } = req.body;
-  console.log(req.body, "username: " + username, "bd: " + bd);
+app.post("/login", async (req, res) => {
+  const { username, bd } = req.body.username;
+  console.log(req.body.username, "username: " + username, "bd: " + bd);
+  
   // find the user that has the same username
   const user = await User.findOne(username);
 
@@ -47,8 +49,8 @@ app.post('/login', async (req, res) => {
       console.log("the item not found, so we'll add this item");
       const newUser = new User({
         id: 0,
-        username,
-        bd,
+        username: "",
+        bd: "",
         location: {
           x: 0,
           y: 0
@@ -64,7 +66,7 @@ app.post('/login', async (req, res) => {
   } else {
     console.log("user found", username);
     res.send(req.body);
-    // res.redirect(`/home/${username}`);
+    res.redirect();
   }
 });
 

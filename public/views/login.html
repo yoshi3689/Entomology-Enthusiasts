@@ -16,13 +16,16 @@
     <fieldset>
       <div class="inputs-container">
         <div class="input-wrapper">
-          <label for="username">user name</label> <input type="text" id="username" name="username" />
+          <label for="username">user name</label> 
+          <input type="text" id="username" name="username" />
         </div>
         <div class="input-wrapper">
-          <label for="username">password</label> <input type="password" id="password" name="password" autocomplete />
+          <label for="username">password</label>
+          <input type="password" id="password" name="password" />
         </div>
         <div class="input-wrapper">
-          <label for="username">birthday</label> <input type="date" id="bd" name="bd" />
+          <label for="username">birthday</label> 
+          <input type="date" id="bd" name="bd" />
         </div>
       </div>
       <input type="submit" id="submit" value="Login/Sign Up">
@@ -41,17 +44,17 @@
       fetch("/login", {
         method: "post",
         headers: {
-            "Content-type": "application/x-www-form-urlencoded"
-          },
-          body: {
-            username,
-            password,
-            bd: bdToDate
-          }
+          "Content-type": "application/x-www-form-urlencoded"
+        },
+        body: {
+          username,
+          password,
+          bd: bdToDate
+        }
       })
-      .then(res => res.json())
-      .then(data => console.log(data))
-      ;
+        .then(res => res.json())
+        .then(data => console.log(data))
+        ;
     }
     submitBtn.addEventListener("click", postUserInfo);
   </script>
