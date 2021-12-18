@@ -7,8 +7,12 @@ const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/m
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
+// https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples
+
 const userRouter = require("./routes/users");
 const User = require("./models/User");
+
+app.set("view engine", "ejs");
 
 app.use(express.static("./public"));
 
@@ -20,50 +24,50 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
 
-app.get("/login", async (req, res) => {
-  const { username, bd } = req.body;
-  console.log("username: " + username, "bd: " + bd);
-  
+app.post("/login", async (req, res) => {
+  // console.log(req.body.username, req.body.password);
+  const { username, password } = req.body;
   // find the user that has the same username
-  const user = await User.findOne(username);
+  const user = await User.findOne({ username });
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples
-  if (!user) {
+  if (user && user.password !== password) { // User exists, wrong password; send success: false
+    console.log("Wrong password.");
+    res.status(400).json({ success: false });
+  } else if (!user) { // Create new user; send success: true
     try {
       console.log("Creating new user.");
       const newUser = new User({
-        username: username,
-        bd: bd,
+        username,
+        password,
         location: {
           x: 0,
           y: 0
         },
         mostRecent: null
       });
-      // Create new user, redirect to home page
       newUser.save().then(() => {
         console.log("New user added", newUser.username);
-        res.redirect("/home");
+        res.status(200).json({ success: true });
       });
     } catch(err) {
       console.log(err);
     }
-  } else {
+  } else { //user exists, password correct; send success: true
     console.log("User found: ", username);
-    // res.send(req.body);
-    res.redirect("/home");
+    res.status(200).json({ success: true });
   }
 });
 
 
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/public/views/login.html"));
+  res.render(path.join(__dirname, "/public/views/login.ejs"))
 });
 
 
 app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "/public/views/index.html"));
+  res.render(path.join(__dirname, "/public/views/index.ejs"));
+
 });
 
 

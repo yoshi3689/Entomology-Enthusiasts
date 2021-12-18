@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="../styles/styles.css" />
+  <link rel="stylesheet" href="../styles/login.css" />
+</head>
+
+<body>
+  <div class="form-wrapper">
+    <caption>Log in / Sign Up</caption>
+    <div class="form-container">
+      <div class="inputs-container">
+        <div class="input-wrapper">
+          <label for="username">user name</label> 
+          <input type="text" id="username" name="username" value="yoshi" />
+        </div>
+        <div class="input-wrapper">
+          <label for="username">password</label>
+          <input type="password" id="password" name="password" />
+        </div>
+        <!-- <div class="input-wrapper">
+          <label for="username">birthday</label> 
+          <input type="date" id="bd" name="bd" />
+        </div> -->
+      </div>
+      <input type="submit" id="submit" value="Login/Sign Up">
+    </div>
+  </div>
+  <script>
+    const submitBtn = document.getElementById("submit");
+    const postUserInfo = (e) => {
+      e.preventDefault();
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+      console.log(e.target, username, password);
+
+      fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        })
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Login successful");
+          window.location.replace("/home");
+        }
+      })
+    }
+    submitBtn.addEventListener("click", postUserInfo);
+  </script>
+</body>
+
+</html>
