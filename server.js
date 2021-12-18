@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
 
-app.post("/login", async (req, res) => {
+app.get("/login", async (req, res) => {
   const { username, bd } = req.body;
   console.log("username: " + username, "bd: " + bd);
   
@@ -32,7 +32,6 @@ app.post("/login", async (req, res) => {
     try {
       console.log("Creating new user.");
       const newUser = new User({
-        id: 0,
         username: username,
         bd: bd,
         location: {
