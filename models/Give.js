@@ -1,9 +1,11 @@
-const {
-  model,
-  Schema
-} = require("mongoose");
+// const {
+//   model,
+//   Schema
+// } = require("mongoose");
 
-const giveSchema = new Schema({
+const mongoose = require("mongoose")
+
+const giveSchema = new mongoose.Schema({
   quantity: Number,
   location: {
     // can I somehow get the location from the user object
@@ -22,4 +24,4 @@ const giveSchema = new Schema({
   }
 });
 
-module.exports = model("Give", giveSchema);
+module.exports = mongoose.model("Give", giveSchema);
