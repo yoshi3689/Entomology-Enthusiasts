@@ -3,17 +3,20 @@ const {
   Schema
 } = require("mongoose");
 
-const avocadoSchema = new Schema({
-  q: Number,
+const giveSchema = new Schema({
+  quantity: Number,
   location: {
     // can I somehow get the location from the user object
     x: Number,
     y: Number
   },
   ripeness: {
-    type: String,
-    enum: ['over_ripe', 'ripe', 'under_ripe'],
-    default: 'ripe'
+    type: [Boolean],
+    default: [false, false, false]
+  },
+  exchange: {
+    type: Boolean,
+    default: false
   },
   time: {
     type: Date,
@@ -25,4 +28,4 @@ const avocadoSchema = new Schema({
   }
 });
 
-module.exports = model("Post", avocadoSchema);
+module.exports = model("Give", giveSchema);
