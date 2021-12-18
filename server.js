@@ -11,22 +11,61 @@ const PORT = 5000;
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
+const userRouter = require("./routes/users");
+const User = require("./models/User");
+
+
 // sets the view engine to ejs
 // app.set("view engine", "ejs");
 
 // logging out every request details
 app.use(morgan("common"));
-
+app.use("/user", userRouter);
 // setting the limit for the file size accepted for the request body
-app.use(bodyParser.json({ limit: "25mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}))
+// app.use(bodyParser.json({ limit: "25mb", extended: true }));
+// app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 
 // serving the files from the folder "views", 
 // (serves a different file depending on the user's current directory)
 app.use(express.static("./public"));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views/index.html"));
+  res.sendFile(path.join(__dirname, "public/views/login.html"));
+});
+
+app.post('/login', async (req, res) => {
+  const { username, bd } = req.body;
+  console.log(req.body, "username: " + username, "bd: " + bd);
+  // find the user that has the same username
+  const user = await User.findOne(username);
+
+  // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples
+  if (!user) {
+    try {
+      console.log("the item not found, so we'll add this item");
+      const newUser = new User({
+        id: 0,
+        username,
+        bd,
+        location: {
+          x: 0,
+          y: 0
+        },
+        mostRecent: null
+      });
+      newUser.save().then(() => {
+        console.log("new user added", newUser.username);
+      });
+    } catch(err) {
+      console.log(err);
+    }
+  } else {
+    console.log("user found", username);
+    res.send(req.body);
+    // res.redirect(`/home/${username}`);
+  }
 });
 
 // app.get("*", (req, res) => {
