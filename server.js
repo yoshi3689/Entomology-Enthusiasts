@@ -14,6 +14,52 @@ const morgan = require("morgan");
 const userRouter = require("./routes/users");
 const User = require("./models/User");
 
+// Chat feature
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+var Message = mongoose.model("Message", {
+  message: String
+});
+
+app.get("/messages", (req, res) => {
+  Message.find({},(err, messages)=> {
+    res.send(messages);
+  })
+});
+
+app.get("/messages/:user", (req, res) => {
+  console.log(req.params);
+  var user = req.params.user;
+  Message.find({name: user},(err, messages)=> {
+    res.send(messages);
+  })
+});
+
+app.post("/messages", async (req, res) => {
+  try {
+    var message = new Message(req.body);
+
+    var savedMessage = await message.save();
+  } 
+  catch (error) {
+  res.sendStatis(500);
+  return console.log("error", error);
+  }
+  finally {
+    console.log("Message posted");
+  }
+});
+
+io.on("connection", () => {
+  console.log("A user is connected");
+});
+
+
+
 
 // sets the view engine to ejs
 // app.set("view engine", "ejs");

@@ -35,8 +35,8 @@ body{
     
 }
 input{
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    bottom: 2rem;
     left: 0;
     width: 72%;
     padding: 1%;
@@ -46,8 +46,8 @@ input{
     border-radius: 5px;
 }
 button{
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    bottom: 2rem;
     right: 0; 
     width: 25%;
     padding: 1%;
