@@ -10,14 +10,8 @@ const giveSchema = new Schema({
     x: Number,
     y: Number
   },
-  ripeness: {
-    type: [Boolean],
-    default: [false, false, false]
-  },
-  exchange: {
-    type: Boolean,
-    default: false
-  },
+  ripeness: [Boolean],
+  exchange: Boolean,
   time: {
     type: Date,
     default: Date.now
