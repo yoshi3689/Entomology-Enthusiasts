@@ -1,18 +1,12 @@
 const logo = document.getElementById("avoyy-logo");
 const lookingDiv = document.getElementById("looking");
 const givingDiv = document.getElementById("giving");
-let lookingClicked = false;
-let givingClicked = false;
+
+// Flag to prevent repetetive clicking.
 let clicked = false;
 
-let receiveClicked = false;
-let giveClicked = false;
-
-// expand the div element cliecked across the page
-
-
-
 // Giving path
+let givingClicked = false;
 givingDiv.addEventListener("click", () => {
   givingDiv.classList.add("div-fill");
   lookingDiv.querySelector("p").classList.add("fade-out");
@@ -32,6 +26,7 @@ givingDiv.addEventListener("click", () => {
 
 
 // Looking path
+let lookingClicked = false;
 lookingDiv.addEventListener("click", () => {
   lookingDiv.classList.add("div-fill");
   givingDiv.querySelector("p").classList.add("fade-out");
@@ -74,15 +69,9 @@ function insertButtons() {
 
 }
 
-
+let exchangeFlag = false;
 function receive() {
   document.getElementById("exchange").style.display = "none";
-
-  receiveForm();
-}
-
-function receiveExchange() {
-  document.getElementById("receive").style.display = "none";
 
   receiveForm();
 }
@@ -93,13 +82,19 @@ function give() {
   giveForm();
 }
 
+function receiveExchange() {
+  document.getElementById("receive").style.display = "none";
+  exchangeFlag = true;
+  receiveForm();
+}
+
 function giveExchange() {
   document.getElementById("give").style.display = "none";
-
+  exchangeFlag = true;
   giveForm();
 }
 
-
+let receiveClicked = false;
 function receiveForm() {
 
   if (!receiveClicked) {
@@ -178,6 +173,7 @@ function receiveForm() {
   }
 }
 
+let giveClicked = false;
 function giveForm() {
 
   if (!giveClicked) {
@@ -274,4 +270,36 @@ function decrement() {
     num--;
     document.getElementById("number").value = num;
   }
+}
+
+const postAvo = (e) => {
+  e.preventDefault();
+  let seek;
+  if (receiveClicked) {
+    seek = true;
+  } else { // If it isn't a seek, it is a give
+    seek = false;
+  }
+  let quantity = document.getElementById("number").value;
+  // let location = navigator.geolocation.getCurrentPosition();  TODO: extract x and y coords.
+  let ripeness = [
+    document.getElementById("underripe").checked,
+    document.getElementById("ripe").checked,
+    document.getElementById("overripe").checked
+  ];
+  let exchange = exchangeFlag;
+
+  fetch("/avomatcho", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      seek, // Use this to determine the collection: seek or give
+      quantity,
+      location,
+      ripeness,
+      exchange
+    })
+  });
 }

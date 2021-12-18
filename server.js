@@ -21,7 +21,7 @@ app.use(morgan("common"));
 app.use("/user", userRouter);
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 
 app.post("/login", async (req, res) => {
@@ -49,7 +49,7 @@ app.post("/login", async (req, res) => {
         console.log("New user added", newUser.username);
         res.status(200).json({ success: true });
       });
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   } else { //user exists, password correct; send success: true
@@ -58,31 +58,25 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
-
 app.get("/", (req, res) => {
   res.render(path.join(__dirname, "/public/views/login.ejs"))
 });
 
-
 app.get("/home", (req, res) => {
   res.render(path.join(__dirname, "/public/views/index.ejs"));
-
 });
 
-
-app.route("/avomatcho")
-  .get((req, res) => {
-    res.sendFile(path.join(__dirname, "public/views/match.html"));
-  })
+app.route("/avomatcho") // index.js posts to db, match.js gets from db
   .post((req, res) => {
-  // reciving the below from the client (forms on index.html)
-  // req.quantity
-  // req.isRipe
-  
-  // response being a file
-  });
+    // reciving the below from the client (forms on index.html)
 
+
+    // response being a file
+  })
+  .get((req, res) => {
+    
+    res.render(path.join(__dirname, "public/views/match.ejs"));
+  });
 
 // Connect to the database, then start the server.
 const PORT = 5000;
