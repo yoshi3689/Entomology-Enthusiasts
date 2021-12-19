@@ -11,12 +11,12 @@
 body {
   height: 100vh;
   font-family: var(--body-font);
-  background-image: url("../images/av_bg.jpg");
+  background: url("../images/av_bg.jpg");
   background-position: center;
   background-size: cover;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
 #hero {
@@ -37,7 +37,7 @@ h1 {
   height: auto;
   position: absolute;
   left: 50%;
-  top: 0;
+  top: -25% !important;
   transform: translateX(-50%) rotate(200deg);
   z-index: -1;
 }
@@ -51,6 +51,7 @@ h1 {
   background-color: var(--avo-light);
   text-align: center;
   padding: 2rem 1rem;
+  padding-top: 3.5rem;
   border-radius: 3rem;
   border: 2px solid var(--avo-skin);
 }
@@ -58,7 +59,15 @@ h1 {
 #input-wrapper {
   display: flex;
   flex-direction: column;
-  padding-top: 2rem;
+  padding-top: 1.5rem;
+}
+
+#input-wrapper label {
+  padding-top: 1rem;
+}
+
+#input-wrapper input {
+  margin-top: 0.5rem;
 }
 
 #username,
@@ -94,12 +103,17 @@ label {
   border-radius: .5rem;
   border: 1px solid var(--avo-skin);
   background-color: var(--btn-accent);
-  transition: 250ms ease-in-out;
+  transition: 150ms ease-in-out;
 }
 
 #submit:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0px 2px 3px 0px rgba(105, 83, 83, 0.468);
+}
+
+#submit:focus {
+  transform: translateY(0px);
+  box-shadow: inset 0px 0px 4px 1px rgba(105, 83, 83, 0.8);
 }
 
 @media screen and (min-width: 800px) {
