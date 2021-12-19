@@ -80,9 +80,15 @@ p {
 .fade-out {
     animation: fade 1s;
 }
+.quick-fade-out {
+    animation: fade 0.5s;
+}
 
 .fade-in {
     animation: fade 1s reverse;
+}
+.quick-fade-in {
+    animation: fade 0.5s reverse;
 }
 
 .fullscreen {
@@ -92,12 +98,8 @@ p {
 
 
 @keyframes fill-screen {
-    0% {
-        width: 50vw;
-    }
-    100% {
-        width: 100vw;   
-    }
+    0% { width: 50vw; }
+    100% { width: 100vw; }
 }
 
 @keyframes slide-logo-left {
@@ -111,8 +113,8 @@ p {
 }
 
 @keyframes fade {
-    0% {opacity: 1;}
-    100% {opacity: 0;}
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }
 /*-- End of animations for giving and looking divs. --*/
 
