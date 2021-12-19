@@ -274,7 +274,24 @@ function decrement() {
   }
 }
 
-function postAvo() {
+const geoSuccess = pos => {
+  const { latitude, longitude, accuracy } = pos.coords;
+  console.log(latitude, longitude, accuracy);
+  return [latitude, longitude]
+}
+
+const geoFail = err => {
+  console.warn(err.code, err.message);
+}
+const options = {
+  enableHighAccuracy: false,
+  timeOut: 5000,
+  maximumAge: 0
+}
+
+
+
+async function postAvo() {
   // e.preventDefault();
   let seek;
   if (receiveClicked) {
@@ -283,7 +300,8 @@ function postAvo() {
     seek = false;
   }
   let quantity = document.getElementById("number").value;
-  // let location = navigator.geolocation.getCurrentPosition();  TODO: extract x and y coords.
+  let avoLoc = navigator.geolocation.getCurrentPosition(geoSuccess, geoFail, options); 
+  console.log(avoLoc);
   let ripeness = [
     document.getElementById("underripe").checked,
     document.getElementById("ripe").checked,
@@ -299,12 +317,15 @@ function postAvo() {
     body: JSON.stringify({
       seek, // Use this to determine the collection: seek or give
       quantity,
-      // location,
+      avoLoc,
       ripeness,
       exchange
     })
   })
   .then((res) => {
-    console.log(res.json());
+    if (res.status == 200) {
+      window.location.replace("/avomatcho");
+    };
   });
 }
+

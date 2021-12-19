@@ -40,12 +40,7 @@ app.post("/login", async (req, res) => {
       console.log("Creating new user.");
       const newUser = new User({
         username,
-        password,
-        location: {
-          x: 0,
-          y: 0
-        },
-        mostRecent: null
+        password
       });
       newUser.save().then(() => {
         console.log("New user added", newUser.username);
@@ -71,13 +66,44 @@ app.get("/home", (req, res) => {
 
 app.route("/avomatcho") // index.js posts to db, match.js gets from db
   .post((req, res) => {
-    const { seek, quantity, location, ripeness, exchange } = req.body;
+    const { seek, quantity, avoLoc, ripeness, exchange } = req.body;
     console.log(req.body);
     res.send(req.body);
+    if (seek) { // If seek is true, use Seek schema
+      try {
+        const seekRequest = new Seek({
+          quantity,
+          avoLoc,
+          ripeness,
+          exchange
+        });
+        seekRequest.save().then(() => {
+          console.log("Seek request saved!");
+          res.status(200);
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    } else { // Else use Give schema
+      try {
+        const seekRequest = new Give({
+          quantity,
+          avoLoc,
+          ripeness,
+          exchange
+        });
+        seekRequest.save().then(() => {
+          console.log("Give request saved!");
+          res.status(200);
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    }      
   })
-  // .get((req, res) => {
-  // res.render(path.join(__dirname, "public/views/match.ejs"));
-  // });
+  .get((req, res) => {
+  res.render(path.join(__dirname, "public/views/match.ejs"));
+  });
 
 // Connect to the database, then start the server.
 const PORT = 5000;
