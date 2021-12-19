@@ -24,6 +24,9 @@ const dbParsed = async () => {
                 match.setAttribute("class", "match");
                 match.innerHTML = `
                 <span>Number of Avocados: ${avo.quantity}</span><span>Ripeness: ${avo.ripeness[0] ? "Under-ripe": "" + avo.ripeness[1] ? "Ripe": "" + avo.ripeness[2] ? "Over-ripe": ""}</span><span>Distance: ${avo.avoLoc}</span>`;
+                match.addEventListener("click", () => {
+                    window.location.replace("/chat");
+                })
                 matchList.appendChild(match);
             })
         });

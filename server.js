@@ -50,6 +50,8 @@ app.post("/login", async (req, res) => {
     username,
     password
   } = req.body;
+
+  req.session.username = username;
   // find the user that has the same username
   const user = await User.findOne({
     username
@@ -174,6 +176,11 @@ app.get("/avomatcho/hello", async (req, res) => {
     });
   }
 });
+
+// get req on the /chat
+app.get("/chat", (req, res) => {
+  res.render(path.join(__dirname, "public/views/chat.ejs"), { username: req.session.username });
+})
 
 var Message = mongoose.model("Message", {
   message: String
