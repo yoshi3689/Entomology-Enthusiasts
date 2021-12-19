@@ -158,36 +158,16 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
     });
   })
 
-//Sorting by difference function
-const sortByDifference = (arr, x) => {
-  let map = new Map();
-
-  // Store values in a map with the difference
-  for (let i = 0; i < arr.length; i++) {
-    map.set(arr[i].quantity, Math.abs(x - arr[i].quantity));
-  }
-
-  let map1 = new Map([...m.entries()].sort((a, b) =>
-    a[1] - b[1]));
-
-  // Update the values of array
-  let index = 0;
-  for (let [key, value] of map1.entries()) {
-    arr[index++] = key
-  }
-}
-
 // Search the db
 app.get("/avomatcho/hello", async (req, res) => {
   if (req.session.seek) {
-    const avoQuanto = await Give.find({  });
+    const avoQuanto = await Give.find({ quantity: req.session.quantity }).limit(5);
     console.log(avoQuanto);
-    sortByDiffernce(avoQuanto, req.session.quantity);
     res.status(200).json({
       data: avoQuanto
     });
   } else {
-    const avoQuanto = await Seek.find({  });
+    const avoQuanto = await Seek.find({ quantity: req.session.quantity }).limit(5);
     console.log(avoQuanto);
     res.status(200).json({
       data: avoQuanto
