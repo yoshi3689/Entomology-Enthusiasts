@@ -1,62 +1,133 @@
+:root {
+  --btn-accent: #ebff67;
+  --avo-light: #AEBD4C;
+  --avo-dark: #4B7F08;
+  --avo-pit: #904F38;
+  --avo-skin: #325305;
+  --avo-button: rgb(166, 255, 0);
+  --body-font: 'Poppins', sans-serif;
+}
+
 body {
   height: 100vh;
+  font-family: var(--body-font);
   background-image: url("../images/av_bg.jpg");
   background-position: center;
   background-size: cover;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.form-wrapper {
-  margin: auto;
-  height: 66%;
-  width: 80%;
+#hero {
+  margin: 0;
+  transform: translateY(50%);
+  text-align: center;
+  position: relative;
+}
+
+h1 {
+  font-size: 40px;
+  color: var(--btn-accent);
+  text-shadow: 2px 4px rgba(0, 0, 0, 0.468);
+}
+
+#avoyy-logo {
+  width: 60%;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) rotate(200deg);
+  z-index: -1;
+}
+
+#login-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  max-width: 445px;
+  min-width: 175px;
   background-color: var(--avo-light);
   text-align: center;
   padding: 2rem 1rem;
-  border-radius: 2rem;
+  border-radius: 3rem;
+  border: 2px solid var(--avo-skin);
+}
+
+#input-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2rem;
+}
+
+#username,
+#password {
+  width: 70%;
+  min-width: 150px;
+  max-width: 250px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.468);
+  /* border: 1px solid var(--avo-skin); */
+  border: none;
+  border-radius: 10px;
+  padding: 0.25rem;
+  transition: transform 0.25s;
+}
+
+#username:focus,
+#password:focus {
+  transform: scale(1.025, 1.025);
 }
 
 label {
   white-space: nowrap;
-}
-
-.form-container {
-  border: none;
-  height: 100%;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-}
-
-.inputs-container {
-  width: 100%;
-  border: none;
-  height: 100%;
-  display: grid;
-  align-items: center;
-}
-
-.input-wrapper {
-  /* width: 100%; */
-  padding: 2rem 20%;
-  display: flex;
-  justify-content: space-between;
+  font-size: 15px;
 }
 
 #submit {
-  width: 66%;
+  width: 50%;
+  max-width: 200px;
   margin-top: 2rem;
   align-self: start;
   padding: .5rem .25rem;
   border-radius: .5rem;
-  border: none;
+  border: 1px solid var(--avo-skin);
   background-color: var(--btn-accent);
   transition: 250ms ease-in-out;
 }
 
 #submit:hover {
   transform: translateY(-3px);
-  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.468);
+  box-shadow: 0px 2px 3px 0px rgba(105, 83, 83, 0.468);
 }
 
+@media screen and (min-width: 800px) {
+  h1 {
+    font-size: 50px;
+  }
+
+  #username,
+  #password {
+    max-width: none;
+    font-size: 20px;
+    padding: 0.7rem;
+    border-radius: 20px;
+  }
+  
+  label {
+    font-size: 20px;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+  }
+
+  #login-wrapper {
+    max-width: none;
+  }
+
+  #submit {
+    font-size: 20px;
+    padding: 1rem;
+    border-radius: 20px;
+  }
+}
