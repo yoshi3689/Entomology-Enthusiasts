@@ -7,19 +7,15 @@ const mongoose = require("mongoose")
 
 const giveSchema = new mongoose.Schema({
   quantity: Number,
-  location: {
-    // can I somehow get the location from the user object
-    x: Number,
-    y: Number
-  },
+  avoLoc: [Number],
   ripeness: [Boolean],
   exchange: Boolean,
   time: {
     type: Date,
-    default: () => Date.now
+    default: Date.now
   },
   postedBy: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   }
 });

@@ -21,6 +21,6 @@ const postUserInfo = (e) => {
       console.log("Login successful");
       window.location.replace("/home");
     }
-  })
-}
+  });
+} 
 submitBtn.addEventListener("click", postUserInfo);

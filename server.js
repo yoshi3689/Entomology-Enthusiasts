@@ -1,5 +1,6 @@
 // To start server with nodemon, type "npm run devStart" in your terminal/cmd
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
@@ -7,22 +8,33 @@ const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/m
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
-// https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples
-
-const userRouter = require("./routes/users");
-const User = require("./models/User");
-
 app.set("view engine", "ejs");
 
-app.use(express.static("./public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 // logging out every request details
 app.use(morgan("common"));
+
+app.use(express.static("./public"));
+
+// https://stackoverflow.com/questions/27961320/when-should-i-use-cookie-parser-with-express-session
+app.use(session({
+      secret: "avocado farming uses a lot of water",
+      name: "avoCookie",
+      resave: false,
+      saveUninitialized: true
+  })
+);
+
+// Routes
+const userRouter = require("./routes/users");
 app.use("/user", userRouter);
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}))
-
+// MongoDB/mongoose Schema
+const User = require("./models/User");
+const Seek = require("./models/Seek");
+const Give = require("./models/Give");
 
 app.post("/login", async (req, res) => {
   // console.log(req.body.username, req.body.password);
@@ -38,18 +50,13 @@ app.post("/login", async (req, res) => {
       console.log("Creating new user.");
       const newUser = new User({
         username,
-        password,
-        location: {
-          x: 0,
-          y: 0
-        },
-        mostRecent: null
+        password
       });
       newUser.save().then(() => {
         console.log("New user added", newUser.username);
         res.status(200).json({ success: true });
       });
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   } else { //user exists, password correct; send success: true
@@ -58,8 +65,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
-
 app.get("/", (req, res) => {
   res.render(path.join(__dirname, "/public/views/login.ejs"))
 });
@@ -67,22 +72,69 @@ app.get("/", (req, res) => {
 
 app.get("/home", (req, res) => {
   res.render(path.join(__dirname, "/public/views/index.ejs"));
-
 });
 
+// app.get('/',(req,res) => {
+//   session=req.session;
+//   if(session.userid){
+//       res.send("Welcome User <a href=\'/logout'>click to logout</a>");
+//   }else
+//   res.sendFile('views/index.html',{root:__dirname})
+// });
+app.route("/avomatcho") // index.js posts to db, match.js gets from db
+  .post( async (req, res) => {
+    const { seek, quantity, avoLoc, ripeness, exchange } = req.body;
+    console.log(req.body);
+    // console.log(seek);
+    req.session.seek = seek;
 
-app.route("/avomatcho")
-  .get((req, res) => {
-    res.sendFile(path.join(__dirname, "public/views/match.html"));
+    if (seek) { // If seek is true, use Seek schema
+      try {
+        const seekRequest = new Seek({
+          quantity,
+          avoLoc,
+          ripeness,
+          exchange
+        });
+        seekRequest.save().then(() => {
+          console.log("Seek request saved!");
+          res.status(200);
+          res.send();
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    } else { // Else use Give schema
+      try {
+        const seekRequest = new Give({
+          quantity,
+          avoLoc,
+          ripeness,
+          exchange
+        });
+        seekRequest.save().then(() => {
+          console.log("Give request saved!");
+          res.status(200);
+          res.send();
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    }      
   })
-  .post((req, res) => {
-  // reciving the below from the client (forms on index.html)
-  // req.quantity
-  // req.isRipe
-  
-  // response being a file
+  // Render match.ejs
+  .get((req, res) => {
+    res.render(path.join(__dirname, "public/views/match.ejs"), {seek: req.session.seek});
+  })
+  // Search the db
+  .get("/hello", (req, res) => {
+    // res.render(path.join(__dirname, "public/views/match.ejs"));
+    // console.log(req.session.seek);
+    console.log(req.session.seek);
+    res.status(200).json({ seek: req.session.seek });
   });
-
+  // TODO: get request handler 
+  // from match.ejs after it's being loaded
 
 // Connect to the database, then start the server.
 const PORT = 5000;
