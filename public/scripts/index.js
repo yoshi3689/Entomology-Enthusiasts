@@ -1,6 +1,8 @@
 const logo = document.getElementById("avoyy-logo");
 const lookingDiv = document.getElementById("looking");
 const givingDiv = document.getElementById("giving");
+const giveBackArrow = document.getElementById("left-arrow");
+const lookBackArrow = document.getElementById("right-arrow");
 
 // Flag to prevent repetetive clicking.
 let clicked = false;
@@ -15,6 +17,8 @@ givingDiv.addEventListener("click", () => {
     () => {
       givingDiv.classList.add("fullscreen");
       logo.style.display = "none";
+      giveBackArrow.style.display = "block";
+      giveBackArrow.classList.add("fade-in");
     });
 
   if (!clicked) {
@@ -35,6 +39,8 @@ lookingDiv.addEventListener("click", () => {
     () => {
       lookingDiv.classList.add("fullscreen");
       logo.style.display = "none";
+      lookBackArrow.style.display = "block";
+      lookBackArrow.classList.add("fade-in");
     });
 
   if (!clicked) {
