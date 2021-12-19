@@ -274,12 +274,15 @@ function decrement() {
   }
 }
 
+// Get the user's location
+var avoLoc = [];
+
 const geoSuccess = pos => {
   const { latitude, longitude, accuracy } = pos.coords;
-  console.log(latitude, longitude, accuracy);
-  return [latitude, longitude]
+  avoLoc.push(latitude);
+  avoLoc.push(longitude);
+  console.log([latitude, longitude]);
 }
-
 const geoFail = err => {
   console.warn(err.code, err.message);
 }
@@ -288,11 +291,9 @@ const options = {
   timeOut: 5000,
   maximumAge: 0
 }
+navigator.geolocation.getCurrentPosition(geoSuccess, geoFail, options);
 
-
-
-async function postAvo() {
-  // e.preventDefault();
+function postAvo() {  
   let seek;
   if (receiveClicked) {
     seek = true;
@@ -300,8 +301,7 @@ async function postAvo() {
     seek = false;
   }
   let quantity = document.getElementById("number").value;
-  let avoLoc = navigator.geolocation.getCurrentPosition(geoSuccess, geoFail, options); 
-  console.log(avoLoc);
+  
   let ripeness = [
     document.getElementById("underripe").checked,
     document.getElementById("ripe").checked,

@@ -7,11 +7,7 @@ const mongoose = require("mongoose")
 
 const giveSchema = new mongoose.Schema({
   quantity: Number,
-  avoLoc: {
-    // can I somehow get the location from the user object
-    x: Number,
-    y: Number
-  },
+  avoLoc: [Number],
   ripeness: [Boolean],
   exchange: Boolean,
   time: {
