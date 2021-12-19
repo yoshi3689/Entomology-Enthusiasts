@@ -8,10 +8,13 @@ const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/m
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
+
 app.set("view engine", "ejs");
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({
+  extended: true
+}))
 
 // logging out every request details
 app.use(morgan("common"));
@@ -20,12 +23,11 @@ app.use(express.static("./public"));
 
 // https://stackoverflow.com/questions/27961320/when-should-i-use-cookie-parser-with-express-session
 app.use(session({
-      secret: "avocado farming uses a lot of water",
-      name: "avoCookie",
-      resave: false,
-      saveUninitialized: true
-  })
-);
+  secret: "avocado farming uses a lot of water",
+  name: "avoCookie",
+  resave: false,
+  saveUninitialized: true
+}));
 
 // Routes
 const userRouter = require("./routes/users");
@@ -38,13 +40,20 @@ const Give = require("./models/Give");
 
 app.post("/login", async (req, res) => {
   // console.log(req.body.username, req.body.password);
-  const { username, password } = req.body;
+  const {
+    username,
+    password
+  } = req.body;
   // find the user that has the same username
-  const user = await User.findOne({ username });
+  const user = await User.findOne({
+    username
+  });
 
   if (user && user.password !== password) { // User exists, wrong password; send success: false
     console.log("Wrong password.");
-    res.status(400).json({ success: false });
+    res.status(400).json({
+      success: false
+    });
   } else if (!user) { // Create new user; send success: true
     try {
       console.log("Creating new user.");
@@ -54,14 +63,18 @@ app.post("/login", async (req, res) => {
       });
       newUser.save().then(() => {
         console.log("New user added", newUser.username);
-        res.status(200).json({ success: true });
+        res.status(200).json({
+          success: true
+        });
       });
     } catch (err) {
       console.log(err);
     }
   } else { //user exists, password correct; send success: true
     console.log("User found: ", username);
-    res.status(200).json({ success: true });
+    res.status(200).json({
+      success: true
+    });
   }
 });
 
@@ -82,11 +95,21 @@ app.get("/home", (req, res) => {
 //   res.sendFile('views/index.html',{root:__dirname})
 // });
 app.route("/avomatcho") // index.js posts to db, match.js gets from db
-  .post( async (req, res) => {
-    const { seek, quantity, avoLoc, ripeness, exchange } = req.body;
+  .post(async (req, res) => {
+    const {
+      seek,
+      quantity,
+      avoLoc,
+      ripeness,
+      exchange
+    } = req.body;
     console.log(req.body);
     // console.log(seek);
     req.session.seek = seek;
+    req.session.quantity = quantity;
+    req.session.avoLoc = avoLoc;
+    req.session.ripeness = ripeness;
+    req.session.exchange = exchange;
 
     if (seek) { // If seek is true, use Seek schema
       try {
@@ -120,31 +143,61 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
       } catch (err) {
         console.log(err);
       }
-    }      
+    }
   })
   // Render match.ejs
   .get((req, res) => {
-    res.render(path.join(__dirname, "public/views/match.ejs"), {seek: req.session.seek});
+    res.render(path.join(__dirname, "public/views/match.ejs"), {
+      seek: req.session.seek
+    });
   })
-  // Search the db
-  app.get("/avomatcho/hello", async (req, res) => {
-    // res.render(path.join(__dirname, "public/views/match.ejs"));
-    // console.log(req.session.seek);
-    // console.log(req.session.seek);
-    // res.status(200).json({ seek: req.session.seek });
-    // making a request to the seek
-    if (req.session.seek) {
-      // const seekAvocados = await Give.find({  })
-    } else {
 
-    }
-  });
-  // TODO: get request handler 
-  // from match.ejs after it's being loaded
+  // const sortByQuantity = (arr, n, x) => {
+  //   let m = new Map();
+  //   for (let i = 0; i < n; i++) {
+  //     m.set(arr[i].quantity, Math.abs(x - arr[i].quantity));
+  //   }
+  
+  //   let m1 = new Map([...m.entries()].sort((a, b) =>
+  //     a[1] - b[1]));
+  
+  //   // Update the values of array
+  //   let index = 0;
+  //   for (let [key, value] of m1.entries()) {
+  //     arr[index++] = key
+  //   }
+  // }
+
+// Search the db
+app.get("/avomatcho/hello", async (req, res) => {
+  const {
+    quantity,
+    avoLoc,
+    ripeness,
+    exchange
+  } = req.session;
+  // making a request to the seek
+  if (req.session.seek) {
+    const matchingAvocados = await Give.find({});
+    sortByQuantity(matchingAvocados, matchingAvocados.length, quantity);
+    res.status(200).json({
+      data: matchingAvocados
+    });
+  } else {
+    const matchingAvocados = await Seek.find({})
+    res.status(200).json({
+      data: matchingAvocados
+    });
+  }
+});
+// TODO: get request handler 
+// from match.ejs after it's being loaded
 
 // Connect to the database, then start the server.
 const PORT = 5000;
-mongoose.connect(MONGOOSE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGOOSE_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => app.listen(PORT, () => console.log(`server running on port ${PORT}`)))
   .catch((err) => console.log(err));
-
