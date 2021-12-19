@@ -13,6 +13,10 @@ const getAvocados = () => {
     });
 }
 
+// router.get('/chat', function(req, res) {
+//     res.render('path/to/ejs/files/chat');
+//   });
+
 async function dbParsed() {
     
     // How do we know which collection to search?
@@ -38,6 +42,7 @@ async function dbParsed() {
     for (let i = 0; i < 5; i++) {
         const match = document.createElement("div");
         match.setAttribute("class", "match");
+        match.setAttribute("onclick", "/chat")
         match.innerHTML = `
         <span>Distance</span><span>Number of Avocados</span><span>Ripeness</span>`;
         matchList.appendChild(match);

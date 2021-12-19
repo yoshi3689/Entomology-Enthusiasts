@@ -6,55 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" type="text/css" href="../styles/login.css" />
-  <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
-</head>
-
-<body>
-  <form action="../login" method="POST">
-    <caption>Log in / Sign Up</caption>
-    <fieldset>
-      <div class="inputs-container">
-        <div class="input-wrapper">
-          <label for="username">user name</label> <input type="text" id="username" name="username" />
-        </div>
-        <div class="input-wrapper">
-          <label for="username">password</label> <input type="password" id="password" name="password" autocomplete />
-        </div>
-        <div class="input-wrapper">
-          <label for="username">birthday</label> <input type="date" id="bd" name="bd" />
-        </div>
-      </div>
-      <input type="submit" id="submit" value="Login/Sign Up">
-    </fieldset>
-  </form>
-  <script>
-    const submitBtn = document.getElementById("submit");
-    const postUserInfo = (e) => {
-      e.preventDefault();
-      let username = document.getElementById("username").value;
-      let password = document.getElementById("password").value;
-      let bd = document.getElementById("bd").value.split("-");
-      let bdToDate = new Date(bd[0], bd[1], bd[2]);
-      console.log(e.target, username, password, bdToDate);
-
-      fetch("/login", {
-        method: "post",
-        headers: {
-            "Content-type": "application/x-www-form-urlencoded"
-          },
-          body: {
-            username,
-            password,
-            bd: bdToDate
-          }
-      })
-      .then(res => res.json())
-      .then(data => console.log(data))
-      ;
-    }
-    submitBtn.addEventListener("click", postUserInfo);
-  </script>
   <!-- <link rel="stylesheet" href="../styles/styles.css" /> -->
   <link rel="stylesheet" href="../styles/login.css" />
 </head>

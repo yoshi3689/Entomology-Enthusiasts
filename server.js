@@ -8,8 +8,8 @@ const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/m
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
-const userRouter = require("./routes/users");
-const User = require("./models/User");
+// const userRouter = require("./routes/users");
+// const User = require("./models/User");
 
 // Chat feature
 // const http = require("http").Server(app);
@@ -190,8 +190,70 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
   // TODO: get request handler 
   // from match.ejs after it's being loaded
 
+
+ 
+  app.route("/chat") // index.js posts to db, chat.js gets from db (also post to db)
+  .post( async (req, res) => {
+    const { message, time, postedBy } = req.body;
+    console.log(req.body);
+    // console.log(seek);
+    req.session.message = message;
+
+    // if (seek) { // If seek is true, use Seek schema
+    //   try {
+    //     const seekRequest = new Seek({
+    //       quantity,
+    //       avoLoc,
+    //       ripeness,
+    //       exchange
+    //     });
+    //     seekRequest.save().then(() => {
+    //       console.log("Seek request saved!");
+    //       res.status(200);
+    //       res.send();
+    //     })
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // } else { // Else use Give schema
+    //   try {
+    //     const seekRequest = new Give({
+    //       quantity,
+    //       avoLoc,
+    //       ripeness,
+    //       exchange
+    //     });
+    //     seekRequest.save().then(() => {
+    //       console.log("Give request saved!");
+    //       res.status(200);
+    //       res.send();
+    //     })
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }      
+  })
+  // Render match.ejs
+  .get((req, res) => {
+    res.render(path.join(__dirname, "public/views/chat.ejs"));
+  });
+  // Search the db
+  // app.get("/avomatcho/hello", async (req, res) => {
+  //   // res.render(path.join(__dirname, "public/views/match.ejs"));
+  //   // console.log(req.session.seek);
+  //   // console.log(req.session.seek);
+  //   // res.status(200).json({ seek: req.session.seek });
+  //   // making a request to the seek
+  //   if (req.session.seek) {
+  //     // const seekAvocados = await Give.find({  })
+  //   } else {
+
+  //   }});
+
+
+
 // Connect to the database, then start the server.
-const PORT = 5000;
+const PORT = 8000;
 mongoose.connect(MONGOOSE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(PORT, () => console.log(`server running on port ${PORT}`)))
   .catch((err) => console.log(err));
