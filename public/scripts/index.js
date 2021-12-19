@@ -301,9 +301,8 @@ function postAvo() {
     seek = false;
   }
   //TODO: pass receiveClicked instead of seek
-
-  let quantity = document.getElementById("number").value;
   
+  let quantity = document.getElementById("number").value;
   let ripeness = [
     document.getElementById("underripe").checked,
     document.getElementById("ripe").checked,
