@@ -15,7 +15,7 @@ function  sendAMessage(){
     let timeSpan = document.createElement("SPAN");
     timeSpan.setAttribute("class", "time");
     
-    let time = document.createTextNode(d.getHours() + ":" + ((d.getMinutes()<10)?'0':'' + d.getMinutes()));
+    let time = document.createTextNode(d.getHours() + ":" + ((d.getMinutes()<10)?'0':'') + d.getMinutes());
 
     timeSpan.appendChild(time);
 
@@ -23,8 +23,20 @@ function  sendAMessage(){
     container.appendChild(messagePara);
     container.appendChild(timeSpan);
     x.appendChild(container);
+
     document.getElementById('text-input').value = "";
+
     }
+}
+function handle(e){
+    if(e.keyCode === 13){
+        // Ensure it is only this code that runs
+        e.preventDefault(); 
+        sendAMessage()
+    }
+}
+function gettingAMeesage(){
+    
 }
 
 // var socket = io();

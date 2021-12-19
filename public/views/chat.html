@@ -11,13 +11,10 @@
 <body>
   <h2>Chat with</h2>
   <h2 id="name">...</h2>
+
   <div id="sendAMessage">
-
-    <input type="text" id="text-input">
-
+    <input type="text" id="text-input" onkeypress="handle(event)">
     <button class="submit" onclick="sendAMessage()">Send</button>
-    <br/>
-  
   </div>
   <script>
   
