@@ -24,7 +24,7 @@ html {
     position: absolute;
     top: 10%;
     left: 50%;
-    transform: translate(-50%, -10%);
+    transform: translate(-50%, -10%) rotate(200deg);
     width: 20vw;
     min-width: 100px;
     max-width: 200px;
