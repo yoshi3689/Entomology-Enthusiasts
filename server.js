@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set("view engine", "ejs");
 
@@ -158,22 +158,6 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
     });
   })
 
-  // const sortByQuantity = (arr, n, x) => {
-  //   let m = new Map();
-  //   for (let i = 0; i < n; i++) {
-  //     m.set(arr[i].quantity, Math.abs(x - arr[i].quantity));
-  //   }
-  
-  //   let m1 = new Map([...m.entries()].sort((a, b) =>
-  //     a[1] - b[1]));
-  
-  //   // Update the values of array
-  //   let index = 0;
-  //   for (let [key, value] of m1.entries()) {
-  //     arr[index++] = key
-  //   }
-  // }
-
 // Search the db
 app.get("/avomatcho/hello", async (req, res) => {
   const {
@@ -196,6 +180,23 @@ app.get("/avomatcho/hello", async (req, res) => {
     });
   }
 });
+
+//Sorting by difference function
+const sortByDifference = (arr, n, x) => {
+  let m = new Map();
+  for (let i = 0; i < n; i++) {
+    m.set(arr[i].quantity, Math.abs(x - arr[i].quantity));
+  }
+
+  let m1 = new Map([...m.entries()].sort((a, b) =>
+    a[1] - b[1]));
+
+  // Update the values of array
+  let index = 0;
+  for (let [key, value] of m1.entries()) {
+    arr[index++] = key
+  }
+}
 
 var Message = mongoose.model("Message", {
   message: String
@@ -237,8 +238,8 @@ var Message = mongoose.model("Message", {
 // Connect to the database, then start the server.
 const PORT = 5000;
 mongoose.connect(MONGOOSE_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => app.listen(PORT, () => console.log(`server running on port ${PORT}`)))
   .catch((err) => console.log(err));

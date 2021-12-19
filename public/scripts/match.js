@@ -5,23 +5,23 @@ const loader = document.getElementById("loader");
 
 
 // use animations to show divs, potentially change to use promises
-loader.classList.add("fade-out");
-loader.addEventListener("animationend", () => {
-    loader.style.display = "none";
-    matcho.style.display = "block";
-
-});
 
 const dbParsed = async () => {
     fetch("/avomatcho/hello")
         .then((res) => res.json())
         .then(data => {
-            matcho.classList.add("avomatcho-found");
-            matcho.addEventListener("animationend", () => {
-                matchList.classList.add("fade-in");
-                matchList.style.display = "flex";
+            loader.classList.add("fade-out");
+            loader.addEventListener("animationend", () => {
+                loader.style.display = "none";
+                matcho.style.display = "block";
+                matcho.classList.add("avomatcho-found");
+                matcho.addEventListener("animationend", () => {
+                    matchList.classList.add("fade-in");
+                    matchList.style.display = "flex";
+                });
             });
-            
+
+
             // loop for generating divs in which to place database results
             data.data.forEach(avo => {
                 const match = document.createElement("div");
