@@ -127,11 +127,17 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
     res.render(path.join(__dirname, "public/views/match.ejs"), {seek: req.session.seek});
   })
   // Search the db
-  .get("/hello", (req, res) => {
+  app.get("/avomatcho/hello", async (req, res) => {
     // res.render(path.join(__dirname, "public/views/match.ejs"));
     // console.log(req.session.seek);
-    console.log(req.session.seek);
-    res.status(200).json({ seek: req.session.seek });
+    // console.log(req.session.seek);
+    // res.status(200).json({ seek: req.session.seek });
+    // making a request to the seek
+    if (req.session.seek) {
+      // const seekAvocados = await Give.find({  })
+    } else {
+
+    }
   });
   // TODO: get request handler 
   // from match.ejs after it's being loaded
