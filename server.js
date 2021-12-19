@@ -1,5 +1,6 @@
 // To start server with nodemon, type "npm run devStart" in your terminal/cmd
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
@@ -65,9 +66,10 @@ app.get("/home", (req, res) => {
 });
 
 app.route("/avomatcho") // index.js posts to db, match.js gets from db
-  .post((req, res) => {
+  .post( async (req, res) => {
     const { seek, quantity, avoLoc, ripeness, exchange } = req.body;
     console.log(req.body);
+    const avocado = await Give.find({})
     res.send(req.body);
     if (seek) { // If seek is true, use Seek schema
       try {
@@ -102,8 +104,14 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
     }      
   })
   .get((req, res) => {
-  res.render(path.join(__dirname, "public/views/match.ejs"));
-  });
+    const { seek } = req.body;
+    res.render(path.join(__dirname, "public/views/match.ejs"));
+    res.status(200)
+    console.log(seek);
+  })
+
+  // TODO: get request handler 
+  // from match.ejs after it's being loaded
 
 // Connect to the database, then start the server.
 const PORT = 5000;

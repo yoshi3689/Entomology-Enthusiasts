@@ -3,7 +3,24 @@ const matchList = document.getElementById("match-list");
 const loader = document.getElementById("loader");
 
 async function dbParsed() {
-    // await database parsing
+    
+    // How do we know which collection to search?
+    //  Use a flag from the body that writes to this
+
+    // fetch("/avomatcho", {
+    //     method: "GET",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //         seek // seek is undefined in the get body
+    //     })
+    // }).then((res) => {
+    //     console.log(res.json());
+    // })
+
+    // await database search
+    // using the flag from the fetch, search the correct collection for matches
 
     // loop for generating divs in which to place database results
     for (let i = 0; i < 5; i++) {
@@ -26,4 +43,5 @@ async function dbParsed() {
         });
     });
 }
-setTimeout(dbParsed, 3000);
+setTimeout(dbParsed, 3000); //placeholder for the time it takes to search the db
+window.addEventListener("DOMContentLoaded", )

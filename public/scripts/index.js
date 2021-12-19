@@ -300,6 +300,8 @@ function postAvo() {
   } else { // If it isn't a seek, it is a give
     seek = false;
   }
+  //TODO: pass receiveClicked instead of seek
+
   let quantity = document.getElementById("number").value;
   
   let ripeness = [
