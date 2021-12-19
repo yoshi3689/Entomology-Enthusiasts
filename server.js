@@ -8,6 +8,8 @@ const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/m
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set("view engine", "ejs");
 
@@ -18,6 +20,10 @@ app.use(express.urlencoded({
 
 // logging out every request details
 app.use(morgan("common"));
+
+// Chat feature
+// const http = require("http").Server(app);
+// const io = require("socket.io")(http);
 
 app.use(express.static("./public"));
 
@@ -154,41 +160,19 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
     });
   })
 
-  // const sortByQuantity = (arr, n, x) => {
-  //   let m = new Map();
-  //   for (let i = 0; i < n; i++) {
-  //     m.set(arr[i].quantity, Math.abs(x - arr[i].quantity));
-  //   }
-  
-  //   let m1 = new Map([...m.entries()].sort((a, b) =>
-  //     a[1] - b[1]));
-  
-  //   // Update the values of array
-  //   let index = 0;
-  //   for (let [key, value] of m1.entries()) {
-  //     arr[index++] = key
-  //   }
-  // }
-
 // Search the db
 app.get("/avomatcho/hello", async (req, res) => {
-  const {
-    quantity,
-    avoLoc,
-    ripeness,
-    exchange
-  } = req.session;
-  // making a request to the seek
   if (req.session.seek) {
-    const matchingAvocados = await Give.find({});
-
+    const avoQuanto = await Give.find({ quantity: req.session.quantity }).limit(5);
+    console.log(avoQuanto);
     res.status(200).json({
-      data: matchingAvocados
+      data: avoQuanto
     });
   } else {
-    const matchingAvocados = await Seek.find({})
+    const avoQuanto = await Seek.find({ quantity: req.session.quantity }).limit(5);
+    console.log(avoQuanto);
     res.status(200).json({
-      data: matchingAvocados
+      data: avoQuanto
     });
   }
 });
@@ -198,11 +182,48 @@ app.get("/chat", (req, res) => {
   res.render(path.join(__dirname, "public/views/chat.ejs"), { username: req.session.username });
 })
 
+var Message = mongoose.model("Message", {
+  message: String
+});
+
+// app.get("/messages", (req, res) => {
+//   Message.find({},(err, messages)=> {
+//     res.send(messages);
+//   })
+// });
+
+// app.get("/messages/:user", (req, res) => {
+//   console.log(req.params);
+//   var user = req.params.user;
+//   Message.find({name: user},(err, messages)=> {
+//     res.send(messages);
+//   })
+// });
+
+// app.post("/messages", async (req, res) => {
+//   try {
+//     var message = new Message(req.body);
+
+//     var savedMessage = await message.save();
+//   } 
+//   catch (error) {
+//   res.sendStatis(500);
+//   return console.log("error", error);
+//   }
+//   finally {
+//     console.log("Message posted");
+//   }
+// });
+
+// io.on("connection", () => {
+//   console.log("A user is connected");
+// });
+
 // Connect to the database, then start the server.
 const PORT = 5000;
 mongoose.connect(MONGOOSE_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => app.listen(PORT, () => console.log(`server running on port ${PORT}`)))
   .catch((err) => console.log(err));
