@@ -24,7 +24,7 @@ html {
     position: absolute;
     top: 10%;
     left: 50%;
-    transform: translate(-50%, -10%);
+    transform: translate(-50%, -10%) rotate(200deg);
     width: 20vw;
     min-width: 100px;
     max-width: 200px;
@@ -80,9 +80,15 @@ p {
 .fade-out {
     animation: fade 1s;
 }
+.quick-fade-out {
+    animation: fade 0.5s;
+}
 
 .fade-in {
     animation: fade 1s reverse;
+}
+.quick-fade-in {
+    animation: fade 0.5s reverse;
 }
 
 .fullscreen {
@@ -92,27 +98,23 @@ p {
 
 
 @keyframes fill-screen {
-    0% {
-        width: 50vw;
-    }
-    100% {
-        width: 100vw;   
-    }
+    0% { width: 50vw; }
+    100% { width: 100vw; }
 }
 
 @keyframes slide-logo-left {
-    0% { transform: translate(-50%, -10%); }
+    0% { transform: translate(-50%, -10%) rotate(200deg); }
     100% { transform: translate(-100vw, -10%); }
 }
 
 @keyframes slide-logo-right {
-    0% { transform: translate(-50%, -10%); }
+    0% { transform: translate(-50%, -10%) rotate(200deg); }
     100% { transform: translate(100vw, -10%); }
 }
 
 @keyframes fade {
-    0% {opacity: 1;}
-    100% {opacity: 0;}
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }
 /*-- End of animations for giving and looking divs. --*/
 
@@ -226,6 +228,49 @@ button:hover,
 #submit-here:hover {
     transform: scale(1.05, 1.05);
 }
+
+/* Back arrows */
+.arrow {
+	position: absolute;
+	top: 10%;
+	width: 3vmin;
+	height: 3vmin;
+	background: transparent;
+	border-top: 1vmin solid var(--btn-accent);
+	border-right: 1vmin solid var(--btn-accent);
+	box-shadow: 0 0 0 lightgray;
+	transition: all 200ms ease;
+}
+
+.left {
+	left: 10%;
+	transform: translate3d(0, -50%, 0) rotate(45deg);
+    display: none;
+}
+
+.right {
+	right: 10%;
+	transform: translate3d(0, -50%, 0) rotate(225deg);
+    display: none;
+}
+	
+.arrow:hover {
+	border-color: orange;
+	box-shadow: 0.5vmin -0.5vmin 0 var(--btn-accent);
+}
+	
+.arrow:before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-40%,-60%) rotate(45deg);
+	width: 200%;
+	height: 200%;
+}
+
+/* End of back arrows */
+
 
 @media screen and (min-width: 700px) {
     html {
