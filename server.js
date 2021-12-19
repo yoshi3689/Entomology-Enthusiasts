@@ -158,45 +158,42 @@ app.route("/avomatcho") // index.js posts to db, match.js gets from db
     });
   })
 
-// Search the db
-app.get("/avomatcho/hello", async (req, res) => {
-  const {
-    quantity,
-    avoLoc,
-    ripeness,
-    exchange
-  } = req.session;
-  // making a request to the seek
-  if (req.session.seek) {
-    const matchingAvocados = await Give.find({});
-    sortByQuantity(matchingAvocados, matchingAvocados.length, quantity);
-    res.status(200).json({
-      data: matchingAvocados
-    });
-  } else {
-    const matchingAvocados = await Seek.find({})
-    res.status(200).json({
-      data: matchingAvocados
-    });
-  }
-});
-
 //Sorting by difference function
-const sortByDifference = (arr, n, x) => {
-  let m = new Map();
-  for (let i = 0; i < n; i++) {
-    m.set(arr[i].quantity, Math.abs(x - arr[i].quantity));
+const sortByDifference = (arr, x) => {
+  let map = new Map();
+
+  // Store values in a map with the difference
+  for (let i = 0; i < arr.length; i++) {
+    map.set(arr[i].quantity, Math.abs(x - arr[i].quantity));
   }
 
-  let m1 = new Map([...m.entries()].sort((a, b) =>
+  let map1 = new Map([...m.entries()].sort((a, b) =>
     a[1] - b[1]));
 
   // Update the values of array
   let index = 0;
-  for (let [key, value] of m1.entries()) {
+  for (let [key, value] of map1.entries()) {
     arr[index++] = key
   }
 }
+
+// Search the db
+app.get("/avomatcho/hello", async (req, res) => {
+  if (req.session.seek) {
+    const avoQuanto = await Give.find({  });
+    console.log(avoQuanto);
+    sortByDiffernce(avoQuanto, req.session.quantity);
+    res.status(200).json({
+      data: avoQuanto
+    });
+  } else {
+    const avoQuanto = await Seek.find({  });
+    console.log(avoQuanto);
+    res.status(200).json({
+      data: avoQuanto
+    });
+  }
+});
 
 var Message = mongoose.model("Message", {
   message: String

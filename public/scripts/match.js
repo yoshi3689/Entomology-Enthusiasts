@@ -10,6 +10,8 @@ const dbParsed = async () => {
     fetch("/avomatcho/hello")
         .then((res) => res.json())
         .then(data => {
+
+            //do some animation transitions.
             loader.classList.add("fade-out");
             loader.addEventListener("animationend", () => {
                 loader.style.display = "none";
@@ -21,13 +23,12 @@ const dbParsed = async () => {
                 });
             });
 
-
             // loop for generating divs in which to place database results
             data.data.forEach(avo => {
                 const match = document.createElement("div");
                 match.setAttribute("class", "match");
                 match.innerHTML = `
-                <span>Distance: ${avo.avoLoc}</span><span>Number of Avocados: ${avo.quantity}</span><span>Ripeness:  ${avo.ripeness}</span>`;
+                <span>Distance: ${avo.avoLoc}</span><span>Number of Avocados: ${avo.quantity}</span><span>Ripeness: ${avo.ripeness}</span>`;
                 matchList.appendChild(match);
             })
         });
