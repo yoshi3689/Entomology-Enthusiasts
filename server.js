@@ -1,13 +1,10 @@
-// go to the "server" directory and "npm start"
-// will start the server
-
+// To start server with nodemon, type "npm run devStart" in your terminal/cmd
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const PORT = 5000;
-
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
@@ -15,8 +12,8 @@ const userRouter = require("./routes/users");
 const User = require("./models/User");
 
 // Chat feature
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
+// const http = require("http").Server(app);
+// const io = require("socket.io")(http);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -59,75 +56,142 @@ var Message = mongoose.model("Message", {
 // });
 
 
+app.set("view engine", "ejs");
 
-
-// sets the view engine to ejs
-// app.set("view engine", "ejs");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 // logging out every request details
 app.use(morgan("common"));
-app.use("/user", userRouter);
-// setting the limit for the file size accepted for the request body
-app.use(express.json());
-app.use(express.urlencoded({extended: true}))
-// app.use(bodyParser.json({ limit: "25mb", extended: true }));
-// app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 
-// serving the files from the folder "views", 
-// (serves a different file depending on the user's current directory)
 app.use(express.static("./public"));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views/login.html"));
-});
+// https://stackoverflow.com/questions/27961320/when-should-i-use-cookie-parser-with-express-session
+app.use(session({
+      secret: "avocado farming uses a lot of water",
+      name: "avoCookie",
+      resave: false,
+      saveUninitialized: true
+  })
+);
 
-app.post('/login', async (req, res) => {
-  const { username, bd } = req.body;
-  console.log(req.body, "username: " + username, "bd: " + bd);
+// Routes
+const userRouter = require("./routes/users");
+app.use("/user", userRouter);
+
+// MongoDB/mongoose Schema
+const User = require("./models/User");
+const Seek = require("./models/Seek");
+const Give = require("./models/Give");
+
+app.post("/login", async (req, res) => {
+  // console.log(req.body.username, req.body.password);
+  const { username, password } = req.body;
   // find the user that has the same username
-  const user = await User.findOne(username);
+  const user = await User.findOne({ username });
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples
-  if (!user) {
+  if (user && user.password !== password) { // User exists, wrong password; send success: false
+    console.log("Wrong password.");
+    res.status(400).json({ success: false });
+  } else if (!user) { // Create new user; send success: true
     try {
-      console.log("the item not found, so we'll add this item");
+      console.log("Creating new user.");
       const newUser = new User({
-        id: 0,
         username,
-        bd,
-        location: {
-          x: 0,
-          y: 0
-        },
-        mostRecent: null
+        password
       });
       newUser.save().then(() => {
-        console.log("new user added", newUser.username);
+        console.log("New user added", newUser.username);
+        res.status(200).json({ success: true });
       });
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-  } else {
-    console.log("user found", username);
-    res.send(req.body);
-    // res.redirect(`/home/${username}`);
+  } else { //user exists, password correct; send success: true
+    console.log("User found: ", username);
+    res.status(200).json({ success: true });
   }
 });
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/views/index.html"));
+app.get("/", (req, res) => {
+  res.render(path.join(__dirname, "/public/views/login.ejs"))
+});
+
+
+app.get("/home", (req, res) => {
+  res.render(path.join(__dirname, "/public/views/index.ejs"));
+});
+
+// app.get('/',(req,res) => {
+//   session=req.session;
+//   if(session.userid){
+//       res.send("Welcome User <a href=\'/logout'>click to logout</a>");
+//   }else
+//   res.sendFile('views/index.html',{root:__dirname})
 // });
+app.route("/avomatcho") // index.js posts to db, match.js gets from db
+  .post( async (req, res) => {
+    const { seek, quantity, avoLoc, ripeness, exchange } = req.body;
+    console.log(req.body);
+    // console.log(seek);
+    req.session.seek = seek;
 
+    if (seek) { // If seek is true, use Seek schema
+      try {
+        const seekRequest = new Seek({
+          quantity,
+          avoLoc,
+          ripeness,
+          exchange
+        });
+        seekRequest.save().then(() => {
+          console.log("Seek request saved!");
+          res.status(200);
+          res.send();
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    } else { // Else use Give schema
+      try {
+        const seekRequest = new Give({
+          quantity,
+          avoLoc,
+          ripeness,
+          exchange
+        });
+        seekRequest.save().then(() => {
+          console.log("Give request saved!");
+          res.status(200);
+          res.send();
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    }      
+  })
+  // Render match.ejs
+  .get((req, res) => {
+    res.render(path.join(__dirname, "public/views/match.ejs"), {seek: req.session.seek});
+  })
+  // Search the db
+  app.get("/avomatcho/hello", async (req, res) => {
+    // res.render(path.join(__dirname, "public/views/match.ejs"));
+    // console.log(req.session.seek);
+    // console.log(req.session.seek);
+    // res.status(200).json({ seek: req.session.seek });
+    // making a request to the seek
+    if (req.session.seek) {
+      // const seekAvocados = await Give.find({  })
+    } else {
 
-app.post("/matchfind", (req, res) => {
-  // reciving the below from the client (forms on index.html)
-  // req.quantity
-  // req.isRipe
-  
-  // response being a file
-})
+    }
+  });
+  // TODO: get request handler 
+  // from match.ejs after it's being loaded
 
 // Connect to the database, then start the server.
+const PORT = 5000;
 mongoose.connect(MONGOOSE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(PORT, () => console.log(`server running on port ${PORT}`)))
   .catch((err) => console.log(err));

@@ -1,18 +1,12 @@
 const logo = document.getElementById("avoyy-logo");
 const lookingDiv = document.getElementById("looking");
 const givingDiv = document.getElementById("giving");
-let lookingClicked = false;
-let givingClicked = false;
+
+// Flag to prevent repetetive clicking.
 let clicked = false;
 
-let receiveClicked = false;
-let giveClicked = false;
-
-// expand the div element cliecked across the page
-
-
-
 // Giving path
+let givingClicked = false;
 givingDiv.addEventListener("click", () => {
   givingDiv.classList.add("div-fill");
   lookingDiv.querySelector("p").classList.add("fade-out");
@@ -32,6 +26,7 @@ givingDiv.addEventListener("click", () => {
 
 
 // Looking path
+let lookingClicked = false;
 lookingDiv.addEventListener("click", () => {
   lookingDiv.classList.add("div-fill");
   givingDiv.querySelector("p").classList.add("fade-out");
@@ -74,15 +69,9 @@ function insertButtons() {
 
 }
 
-
+let exchangeFlag = false;
 function receive() {
   document.getElementById("exchange").style.display = "none";
-
-  receiveForm();
-}
-
-function receiveExchange() {
-  document.getElementById("receive").style.display = "none";
 
   receiveForm();
 }
@@ -93,20 +82,27 @@ function give() {
   giveForm();
 }
 
+function receiveExchange() {
+  document.getElementById("receive").style.display = "none";
+  exchangeFlag = true;
+  receiveForm();
+}
+
 function giveExchange() {
   document.getElementById("give").style.display = "none";
-
+  exchangeFlag = true;
   giveForm();
 }
 
-
+let receiveClicked = false;
 function receiveForm() {
 
   if (!receiveClicked) {
 
     const topButton = document.getElementById("looking");
-    const receiveForm = document.createElement("form");
+    const receiveForm = document.createElement("div");
     receiveForm.setAttribute("id", "receive-form");
+    // receiveForm.setAttribute("action", "/avomatcho");
 
     // How Many?
     const label1 = document.createElement("p");
@@ -169,6 +165,7 @@ function receiveForm() {
     submitBtn.setAttribute("type", "submit");
     submitBtn.setAttribute("id", "submit-here");
     submitBtn.setAttribute("value", "Findocado!");
+    submitBtn.setAttribute("onclick", "postAvo()");
     receiveForm.appendChild(submitBtn);
 
     topButton.appendChild(receiveForm);
@@ -177,13 +174,15 @@ function receiveForm() {
   }
 }
 
+let giveClicked = false;
 function giveForm() {
 
   if (!giveClicked) {
 
     const topButton = document.getElementById("giving");
-    const giveForm = document.createElement("form");
+    const giveForm = document.createElement("div");
     giveForm.setAttribute("id", "give-form");
+    // giveForm.setAttribute("action", "/avomatcho");
 
     // How Many?
     const label1 = document.createElement("p");
@@ -252,6 +251,7 @@ function giveForm() {
     submitBtn.setAttribute("type", "submit");
     submitBtn.setAttribute("id", "submit-here");
     submitBtn.setAttribute("value", "Findocado!");
+    submitBtn.setAttribute("onclick", "postAvo()");
     giveForm.appendChild(submitBtn);
 
     topButton.appendChild(giveForm);
@@ -273,3 +273,60 @@ function decrement() {
     document.getElementById("number").value = num;
   }
 }
+
+// Get the user's location
+var avoLoc = [];
+
+const geoSuccess = pos => {
+  const { latitude, longitude, accuracy } = pos.coords;
+  avoLoc.push(latitude);
+  avoLoc.push(longitude);
+  console.log([latitude, longitude]);
+}
+const geoFail = err => {
+  console.warn(err.code, err.message);
+}
+const options = {
+  enableHighAccuracy: false,
+  timeOut: 5000,
+  maximumAge: 0
+}
+navigator.geolocation.getCurrentPosition(geoSuccess, geoFail, options);
+
+function postAvo() {  
+  let seek;
+  if (receiveClicked) {
+    seek = true;
+  } else { // If it isn't a seek, it is a give
+    seek = false;
+  }
+  //TODO: pass receiveClicked instead of seek
+  
+  let quantity = document.getElementById("number").value;
+  let ripeness = [
+    document.getElementById("underripe").checked,
+    document.getElementById("ripe").checked,
+    document.getElementById("overripe").checked
+  ];
+  let exchange = exchangeFlag;
+
+  fetch("/avomatcho", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      seek, // Use this to determine the collection: seek or give
+      quantity,
+      avoLoc,
+      ripeness,
+      exchange
+    })
+  })
+  .then((res) => {
+    if (res.status == 200) {
+      window.location.replace("/avomatcho");
+    };
+  });
+}
+
