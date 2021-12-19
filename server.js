@@ -8,6 +8,8 @@ const MONGOOSE_URI = "mongodb+srv://Yoshi:yoshi1234@cluster0.zdgk4.mongodb.net/m
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.set("view engine", "ejs");
 
@@ -18,6 +20,10 @@ app.use(express.urlencoded({
 
 // logging out every request details
 app.use(morgan("common"));
+
+// Chat feature
+// const http = require("http").Server(app);
+// const io = require("socket.io")(http);
 
 app.use(express.static("./public"));
 
@@ -197,6 +203,43 @@ app.get("/avomatcho/hello", async (req, res) => {
 app.get("/chat", (req, res) => {
   res.render(path.join(__dirname, "public/views/chat.ejs"), { username: req.session.username });
 })
+
+var Message = mongoose.model("Message", {
+  message: String
+});
+
+// app.get("/messages", (req, res) => {
+//   Message.find({},(err, messages)=> {
+//     res.send(messages);
+//   })
+// });
+
+// app.get("/messages/:user", (req, res) => {
+//   console.log(req.params);
+//   var user = req.params.user;
+//   Message.find({name: user},(err, messages)=> {
+//     res.send(messages);
+//   })
+// });
+
+// app.post("/messages", async (req, res) => {
+//   try {
+//     var message = new Message(req.body);
+
+//     var savedMessage = await message.save();
+//   } 
+//   catch (error) {
+//   res.sendStatis(500);
+//   return console.log("error", error);
+//   }
+//   finally {
+//     console.log("Message posted");
+//   }
+// });
+
+// io.on("connection", () => {
+//   console.log("A user is connected");
+// });
 
 // Connect to the database, then start the server.
 const PORT = 5000;

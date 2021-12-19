@@ -1,0 +1,69 @@
+:root {
+    --btn-accent: #ebff67;
+    --avo-light: #AEBD4C;
+    --avo-dark: #4B7F08;
+    --avo-pit: #904F38;
+    --avo-skin: #325305;
+    --avo-button: rgb(166, 255, 0);
+    --body-font: 'Poppins', sans-serif;
+}
+
+body{
+    margin: 0 auto;
+    padding: 0 20px;
+    background: linear-gradient(45deg, var(--avo-light), var(--avo-dark));
+    justify-self: center;
+    height: 100vh;
+}
+.container{
+    border: 2px solid var(--avo-skin);
+    background-color: var(--btn-accent);
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    max-width: 700px;
+    border-radius: 20px 20px 0px 20px;
+    /* text-align: right; */
+}
+.otherSide{
+    border: 2px solid var(--avo-skin);
+    background-color: white;
+    /* consider the container for the line below*/
+    border-radius: 20px 20px 20px 0px; 
+    text-align: left;
+}
+
+.time{
+    color: gray;
+    float: right;
+}
+
+input{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 72%;
+    padding: 1%;
+    font-size: 100%;
+    border-color: var(--avo-skin);
+    /* background-color: var(--avo-light);
+    opacity: 0.3; */
+    background: none;
+    border-radius: 5px;
+}
+button{
+    position: fixed;
+    bottom: 0;
+    right: 0; 
+    width: 25%;
+    padding: 1%;
+    font-size: 100%;
+    border-color: var(--avo-skin);
+    background-color: var(--btn-accent);
+    border-radius: 5px;
+    
+}
+
+#sendAMessage{
+    position: relative;
+}
