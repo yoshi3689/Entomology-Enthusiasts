@@ -28,6 +28,9 @@ const dbParsed = async () => {
                 match.setAttribute("class", "match");
                 match.innerHTML = `
                 <span>Distance: ${avo.avoLoc}</span><span>Number of Avocados: ${avo.quantity}</span><span>Ripeness:  ${avo.ripeness}</span>`;
+                match.addEventListener("click", () => {
+                    window.location.replace("/chat");
+                })
                 matchList.appendChild(match);
             })
         });

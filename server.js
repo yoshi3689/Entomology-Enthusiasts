@@ -44,6 +44,8 @@ app.post("/login", async (req, res) => {
     username,
     password
   } = req.body;
+
+  req.session.username = username;
   // find the user that has the same username
   const user = await User.findOne({
     username
@@ -179,7 +181,7 @@ app.get("/avomatcho/hello", async (req, res) => {
   // making a request to the seek
   if (req.session.seek) {
     const matchingAvocados = await Give.find({});
-    sortByQuantity(matchingAvocados, matchingAvocados.length, quantity);
+
     res.status(200).json({
       data: matchingAvocados
     });
@@ -190,8 +192,11 @@ app.get("/avomatcho/hello", async (req, res) => {
     });
   }
 });
-// TODO: get request handler 
-// from match.ejs after it's being loaded
+
+// get req on the /chat
+app.get("/chat", (req, res) => {
+  res.render(path.join(__dirname, "public/views/chat.ejs"), { username: req.session.username });
+})
 
 // Connect to the database, then start the server.
 const PORT = 5000;
