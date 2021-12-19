@@ -25,38 +25,38 @@ var Message = mongoose.model("Message", {
   message: String
 });
 
-app.get("/messages", (req, res) => {
-  Message.find({},(err, messages)=> {
-    res.send(messages);
-  })
-});
+// app.get("/messages", (req, res) => {
+//   Message.find({},(err, messages)=> {
+//     res.send(messages);
+//   })
+// });
 
-app.get("/messages/:user", (req, res) => {
-  console.log(req.params);
-  var user = req.params.user;
-  Message.find({name: user},(err, messages)=> {
-    res.send(messages);
-  })
-});
+// app.get("/messages/:user", (req, res) => {
+//   console.log(req.params);
+//   var user = req.params.user;
+//   Message.find({name: user},(err, messages)=> {
+//     res.send(messages);
+//   })
+// });
 
-app.post("/messages", async (req, res) => {
-  try {
-    var message = new Message(req.body);
+// app.post("/messages", async (req, res) => {
+//   try {
+//     var message = new Message(req.body);
 
-    var savedMessage = await message.save();
-  } 
-  catch (error) {
-  res.sendStatis(500);
-  return console.log("error", error);
-  }
-  finally {
-    console.log("Message posted");
-  }
-});
+//     var savedMessage = await message.save();
+//   } 
+//   catch (error) {
+//   res.sendStatis(500);
+//   return console.log("error", error);
+//   }
+//   finally {
+//     console.log("Message posted");
+//   }
+// });
 
-io.on("connection", () => {
-  console.log("A user is connected");
-});
+// io.on("connection", () => {
+//   console.log("A user is connected");
+// });
 
 
 
